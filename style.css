@@ -292,22 +292,32 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .product-price--overlay {
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.product-price--overlay .price-value {
+  font-size: 23px;
 }
 
 .price-note {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--color-accent);
   font-weight: 600;
 }
 
 .product-actions--overlay {
   justify-content: center;
+}
+
+.product-actions--overlay .btn {
+  padding: 14px 28px;
+  font-size: 13px;
 }
 
 /* ------------------------------------------------------------
@@ -329,8 +339,20 @@ button {
     max-width: 360px;
   }
 
-  .product-section--overlay .btn {
-    padding: 16px 32px;
+  .product-actions--overlay .btn {
+    padding: 15px 30px;
+    font-size: 13px;
+  }
+
+  .product-price--overlay {
+    font-size: 16px;
+  }
+
+  .product-price--overlay .price-value {
+    font-size: 25px;
+  }
+
+  .price-note {
     font-size: 14px;
   }
 }

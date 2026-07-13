@@ -150,28 +150,48 @@
      価格・ボタン位置を調整
      ------------------------------------------------------------
      画像はobject-fit:containで表示されるため、ウィンドウの縦横比に
-     よって画像の実際の表示サイズ・位置が変わる（PCの縦長ウィンドウ等では
-     上下に余白＝レターボックスができる）。CSSのbottom:%指定だけだと
-     セクション基準になってしまい画像の余白位置とズレるため、実際に
-     描画された画像の下端を基準に位置を計算し直している。
+     よって画像の実際の表示サイズ・位置が変わる（上下または左右に
+     余白＝レターボックスができる）。ただしgetBoundingClientRect()は
+     <img>要素の外枠サイズを返すだけで、containで実際に描画されている
+     範囲は教えてくれないため、naturalWidth/naturalHeightから
+     実際の描画範囲を自前で計算し直している。
      ------------------------------------------------------------ */
   function initOverlayPosition() {
     var sections = Array.prototype.slice.call(document.querySelectorAll('.product-section--overlay'));
     if (sections.length === 0) return;
 
-    var GAP_RATIO = 0.05; // ← 画像下端から何%上に重ねるか（画像側の余白位置に合わせて調整）
+    var GAP_RATIO = 0.02; // ← 画像下端から何%上に重ねるか（画像側の余白位置に合わせて調整）
+
+    // object-fit:contain で実際に描画されている画像範囲（レターボックスを除いた部分）を計算する
+    function getRenderedImageRect(img) {
+      var box = img.getBoundingClientRect();
+      var boxRatio = box.width / box.height;
+      var imgRatio = img.naturalWidth / img.naturalHeight;
+      var width, height;
+
+      if (imgRatio > boxRatio) {
+        width = box.width;
+        height = box.width / imgRatio;
+      } else {
+        height = box.height;
+        width = box.height * imgRatio;
+      }
+
+      var offsetY = (box.height - height) / 2;
+      return { bottom: box.top + offsetY + height, height: height };
+    }
 
     function update() {
       sections.forEach(function (section) {
         var img = section.querySelector('.product-image');
         var info = section.querySelector('.product-overlay-info');
-        if (!img || !info || !img.complete) return;
+        if (!img || !info || !img.complete || !img.naturalWidth) return;
 
         var sectionRect = section.getBoundingClientRect();
-        var imgRect = img.getBoundingClientRect();
-        var gap = imgRect.height * GAP_RATIO;
+        var renderedImg = getRenderedImageRect(img);
+        var gap = renderedImg.height * GAP_RATIO;
 
-        info.style.bottom = (sectionRect.bottom - imgRect.bottom + gap) + 'px';
+        info.style.bottom = (sectionRect.bottom - renderedImg.bottom + gap) + 'px';
       });
     }
 
