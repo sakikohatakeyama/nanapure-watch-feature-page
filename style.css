@@ -118,9 +118,8 @@ button {
 .hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  /* パララックス用に少し拡大しておき、動かしても余白が出ないようにする */
-  transform: scale(1.15);
+  /* FV（看板画像）は上下が切れないよう、切り抜かず画像全体を収めて表示する */
+  object-fit: contain;
 }
 
 .hero-overlay {
@@ -178,12 +177,6 @@ button {
   height: 32px;
   background: rgba(255, 255, 255, 0.7);
   animation: scrollLine 1.8s ease-in-out infinite;
-}
-
-.scroll-cue-text {
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  opacity: 0.85;
 }
 
 @keyframes scrollLine {

@@ -37,7 +37,8 @@
        HERO（表紙セクション）
        ============================================================ -->
   <section class="hero-section snap-section" id="hero">
-    <div class="hero-media" data-parallax>
+    <!-- data-parallaxを付けていない：FVは上下が切れないよう画像全体を収める表示にするため、拡大・移動させるパララックス演出の対象から外している -->
+    <div class="hero-media">
       <!-- ▼▼ 表紙画像を差し替え（推奨サイズ：横1600px以上） ▼▼ -->
       <img
         src="images/kanban.jpg"
@@ -50,7 +51,6 @@
 
     <button class="scroll-cue" id="scrollCue" type="button" aria-label="次のセクションへスクロール">
       <span class="scroll-cue-line"></span>
-      <span class="scroll-cue-text">SCROLL</span>
     </button>
   </section>
 
@@ -72,7 +72,7 @@
     <div class="product-media" data-parallax>
       <!-- ▼▼ 商品画像を差し替え ▼▼ -->
       <img
-        src="images/longchamp_l2605089p71.jpg"
+        src="https://image.rakuten.co.jp/YOUR_SHOP_ID/cabinet/product/longchamp_l2605089p71.jpg"
         alt="LONGCHAMP（ロンシャン） L2605089P71"
         class="product-image"
         loading="lazy">
