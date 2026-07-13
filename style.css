@@ -189,6 +189,28 @@ button {
 }
 
 /* ------------------------------------------------------------
+   3-1. リードセクション（表紙の次のイメージカット＋リード文）
+   画像自体にコピーが入っているため、テキストオーバーレイなし
+   ------------------------------------------------------------ */
+.lead-section {
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+
+.lead-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.lead-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ------------------------------------------------------------
    4. 商品セクション（縦積み・PC/スマホ共通レイアウト）
    PCも含めて常にこの縦積み構成を使用する（画像上・テキスト下）
    ------------------------------------------------------------ */
@@ -290,11 +312,11 @@ button {
   background: linear-gradient(to bottom, #c5292d 0%, #c5292d 46%, #e5e1e0 46%, #e5e1e0 100%);
 }
 
-#product-6 .product-media {
+#product-2 .product-media {
   background: linear-gradient(to bottom, #0eb2e7 0%, #0eb2e7 46%, #e5e1e0 46%, #e5e1e0 100%);
 }
 
-#product-7 .product-media {
+#product-3 .product-media {
   background: linear-gradient(to bottom, #258c6e 0%, #258c6e 46%, #e5e1e0 46%, #e5e1e0 100%);
 }
 
