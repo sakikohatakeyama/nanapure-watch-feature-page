@@ -5,8 +5,8 @@
    1. リセット / 共通変数
    2. 全体レイアウト・Scroll Snap
    3. HEROセクション
-   4. 商品セクション（共通・スマホファースト）
-   5. 商品セクション（PC：左右レイアウト）
+   4. 商品セクション（縦積み・PC/スマホ共通レイアウト）
+   5. 商品セクション（PC：文字サイズ・余白の調整）
    6. クロージングセクション
    7. ボタン / お気に入り
    8. アニメーション（フェードイン）
@@ -33,7 +33,7 @@
   --section-padding-mobile: 24px;
   --section-padding-pc: 64px;
 
-  --page-max-width: 1000px; /* ページ全体の最大幅。PCの大画面でもこの幅の帯として中央表示する */
+  --page-max-width: 800px; /* ページ全体の最大幅。PCの大画面でもこの幅の帯として中央表示する */
 }
 
 * {
@@ -83,13 +83,13 @@ button {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  background: var(--color-bg); /* 1000px幅の帯の外側（大画面PCの左右余白）に敷く背景 */
+  background: var(--color-bg); /* 幅の帯の外側（大画面PCの左右余白）に敷く背景 */
 }
 
 .snap-section {
   position: relative;
   width: 100%;
-  max-width: var(--page-max-width); /* PC・スマホともにページ本体は1000px幅の帯に収める */
+  max-width: var(--page-max-width); /* PC・スマホともにページ本体はこの幅の帯に収める */
   margin-left: auto;
   margin-right: auto;
   height: 100vh;
@@ -195,7 +195,8 @@ button {
 }
 
 /* ------------------------------------------------------------
-   4. 商品セクション（共通・スマホファースト：縦積み）
+   4. 商品セクション（縦積み・PC/スマホ共通レイアウト）
+   PCも含めて常にこの縦積み構成を使用する（画像上・テキスト下）
    ------------------------------------------------------------ */
 .product-section {
   justify-content: flex-start;
@@ -275,28 +276,13 @@ button {
 }
 
 /* ------------------------------------------------------------
-   5. 商品セクション（PC：左右レイアウト）
-   768px以上でスマホの縦積みから左右2カラムへ切り替え
+   5. 商品セクション（PC：文字サイズ・余白の調整）
+   レイアウト構成（画像上・テキスト下）はスマホと共通のまま、
+   768px以上では文字サイズと余白だけ少し大きくする
    ------------------------------------------------------------ */
 @media (min-width: 768px) {
-  .product-section {
-    flex-direction: row;
-  }
-
-  .product-media {
-    width: 58%;
-    height: 100%;
-  }
-
   .product-info {
-    width: 42%;
-    height: 100%;
-    padding: 0 var(--section-padding-pc);
-  }
-
-  /* 偶数番目の商品は画像とテキストの左右を入れ替えて雑誌らしいリズムを作る */
-  .product-section:nth-of-type(even) {
-    flex-direction: row-reverse;
+    padding: 24px var(--section-padding-pc) 32px;
   }
 
   .product-name {
