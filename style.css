@@ -206,9 +206,8 @@ button {
 .product-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  /* パララックス移動時に端が見切れないよう少し拡大 */
-  transform: scale(1.08);
+  /* 商品画像も上下左右が切れないよう、切り抜かず画像全体を収めて表示する */
+  object-fit: contain;
 }
 
 .product-info {
@@ -431,10 +430,5 @@ button {
 
   .scroll-cue-line {
     animation: none;
-  }
-
-  .hero-image,
-  .product-image {
-    transform: none !important;
   }
 }
