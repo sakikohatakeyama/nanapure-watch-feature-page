@@ -98,7 +98,58 @@
   }
 
   /* ------------------------------------------------------------
-     4. お気に入りボタン（ダミー実装）
+     4. PC向け：ホイール操作の高速スナップ
+     ------------------------------------------------------------
+     トラックパッド／マウスホイールの慣性まかせだとセクション間の
+     移動がもたついて感じるため、ホイール操作1回につき1セクション分だけ
+     scrollIntoView(smooth) でジャンプさせている（ブラウザ標準の
+     スムーズスクロールに任せるため軽量・安定）。
+     スクロールの速さを変えたい場合は LOCK_DURATION（ミリ秒）を調整する。
+     タッチ操作（スマホ）はブラウザ標準のScroll Snapに任せているため対象外。
+     ------------------------------------------------------------ */
+  function initFastSnap() {
+    if (prefersReducedMotion) return;
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return; // PC相当のみ対象
+
+    var LOCK_DURATION = 700; // ← スクロール速度の調整はここ（数値を小さくすると速くなる。トラックパッドの慣性で連続ジャンプしない程度の余裕を残すこと）
+    var sections = Array.prototype.slice.call(document.querySelectorAll('.snap-section'));
+    var locked = false;
+
+    function currentIndex() {
+      var top = scrollContainer.scrollTop;
+      var closest = 0;
+      var minDiff = Infinity;
+      sections.forEach(function (sec, i) {
+        var diff = Math.abs(sec.offsetTop - top);
+        if (diff < minDiff) {
+          minDiff = diff;
+          closest = i;
+        }
+      });
+      return closest;
+    }
+
+    function goToIndex(index) {
+      index = Math.max(0, Math.min(sections.length - 1, index));
+      locked = true;
+      sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(function () { locked = false; }, LOCK_DURATION);
+    }
+
+    scrollContainer.addEventListener(
+      'wheel',
+      function (e) {
+        if (Math.abs(e.deltaY) < 4) return;
+        e.preventDefault();
+        if (locked) return;
+        goToIndex(currentIndex() + (e.deltaY > 0 ? 1 : -1));
+      },
+      { passive: false }
+    );
+  }
+
+  /* ------------------------------------------------------------
+     5. お気に入りボタン（ダミー実装）
      ------------------------------------------------------------
      楽天GOLDへ実装する際は、このブロックごと削除し、
      RMS管理画面から発行される「お気に入り登録」ボタンのコードに
@@ -122,6 +173,7 @@
     initFadeIn();
     initParallax();
     initScrollCue();
+    initFastSnap();
     initFavoriteButtons();
   });
 })();
