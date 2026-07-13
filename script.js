@@ -55,7 +55,7 @@
     var locked = false;
 
     var DURATION = prefersReducedMotion ? 0 : 180; // ← 遷移速度の調整はここ
-    var LOCK_DURATION = 550; // ← 慣性による誤爆防止のロック時間
+    var LOCK_DURATION = 1000; // ← 慣性による誤爆防止のロック時間（トラックパッドの余韻がこれより長いと2回分ジャンプすることがある）
     var MIN_DELTA = 10; // ← PCホイールの反応しきい値
     var SWIPE_THRESHOLD = 40; // ← スマホのスワイプ判定のしきい値（px）
 
