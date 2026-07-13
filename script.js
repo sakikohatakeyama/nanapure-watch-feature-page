@@ -146,7 +146,51 @@
   }
 
   /* ------------------------------------------------------------
-     3. お気に入りボタン（ダミー実装）
+     3. 画像に余白入りの商品（product-section--overlay）の
+     価格・ボタン位置を調整
+     ------------------------------------------------------------
+     画像はobject-fit:containで表示されるため、ウィンドウの縦横比に
+     よって画像の実際の表示サイズ・位置が変わる（PCの縦長ウィンドウ等では
+     上下に余白＝レターボックスができる）。CSSのbottom:%指定だけだと
+     セクション基準になってしまい画像の余白位置とズレるため、実際に
+     描画された画像の下端を基準に位置を計算し直している。
+     ------------------------------------------------------------ */
+  function initOverlayPosition() {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('.product-section--overlay'));
+    if (sections.length === 0) return;
+
+    var GAP_RATIO = 0.05; // ← 画像下端から何%上に重ねるか（画像側の余白位置に合わせて調整）
+
+    function update() {
+      sections.forEach(function (section) {
+        var img = section.querySelector('.product-image');
+        var info = section.querySelector('.product-overlay-info');
+        if (!img || !info || !img.complete) return;
+
+        var sectionRect = section.getBoundingClientRect();
+        var imgRect = img.getBoundingClientRect();
+        var gap = imgRect.height * GAP_RATIO;
+
+        info.style.bottom = (sectionRect.bottom - imgRect.bottom + gap) + 'px';
+      });
+    }
+
+    window.addEventListener('resize', update);
+
+    sections.forEach(function (section) {
+      var img = section.querySelector('.product-image');
+      if (img) {
+        if (img.complete) {
+          update();
+        } else {
+          img.addEventListener('load', update);
+        }
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------
+     4. お気に入りボタン（ダミー実装）
      ------------------------------------------------------------
      楽天GOLDへ実装する際は、このブロックごと削除し、
      RMS管理画面から発行される「お気に入り登録」ボタンのコードに
@@ -169,6 +213,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initFadeIn();
     initSectionNav();
+    initOverlayPosition();
     initFavoriteButtons();
   });
 })();

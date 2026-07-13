@@ -29,6 +29,7 @@
   --font-title: 'Shippori Mincho', serif;          /* タイトル：インパクト重視の明朝 */
   --font-brand: 'Cormorant Garamond', serif;        /* 欧文ブランドロゴ用 */
   --font-body: 'Noto Sans JP', sans-serif;          /* 本文：可読性重視 */
+  --font-price: 'Futura', 'Avenir Next', 'Century Gothic', sans-serif; /* 価格の数字用（Futuraが無い環境は近い書体に自動フォールバック） */
 
   --section-padding-mobile: 24px;
   --section-padding-pc: 64px;
@@ -242,6 +243,7 @@ button {
 }
 
 .price-value {
+  font-family: var(--font-price);
   font-size: 22px;
   font-weight: 600;
   margin-right: 2px;
@@ -274,7 +276,7 @@ button {
    価格とボタンだけを重ねる。位置調整は --overlay-bottom で行う。
    ------------------------------------------------------------ */
 .product-section--overlay {
-  --overlay-bottom: 2%; /* ← 画像の余白位置に合わせてここを調整 */
+  --overlay-bottom: 7%; /* ← 画像の余白位置に合わせてここを調整（PC・スマホ共通） */
 }
 
 .product-section--overlay .product-media {
