@@ -85,7 +85,7 @@ button {
   height: 100dvh; /* モバイルのアドレスバー分の誤差を吸収 */
   overflow-y: hidden;
   overflow-x: hidden;
-  background: var(--color-bg); /* 幅の帯の外側（大画面PCの左右余白）に敷く背景 */
+  background: #fcff0a; /* 幅の帯の外側（大画面PCの左右余白）に敷く背景 */
 }
 
 .snap-section {
@@ -113,8 +113,8 @@ button {
   position: absolute;
   inset: 0;
   z-index: 1;
-  /* object-fit:containで生まれる上下の余白（レターボックス）を画像の背景色に合わせる */
-  background: #30c1e5;
+  /* object-fit:containで生まれる上下の余白（レターボックス）の背景色 */
+  background: #fcff0a;
 }
 
 .hero-image {
@@ -202,7 +202,8 @@ button {
   width: 100%;
   height: 58%;
   overflow: hidden;
-  background: #f4f2ef;
+  /* object-fit:containで生まれる余白（レターボックス）の背景色 */
+  background: #fcff0a;
 }
 
 .product-image {
@@ -282,8 +283,6 @@ button {
 
 .product-section--overlay .product-media {
   height: 100%;
-  /* object-fit:containで生まれる上下の余白（レターボックス）を画像の背景色に合わせる（上：赤／下：グレー） */
-  background: linear-gradient(to bottom, #c5292d 0%, #c5292d 45%, #e5e1e1 45%, #e5e1e1 100%);
 }
 
 .product-overlay-info {
