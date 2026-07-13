@@ -112,6 +112,7 @@
     if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return; // PC相当のみ対象
 
     var LOCK_DURATION = 700; // ← スクロール速度の調整はここ（数値を小さくすると速くなる。トラックパッドの慣性で連続ジャンプしない程度の余裕を残すこと）
+    var MIN_DELTA = 30; // ← 反応の鈍感さの調整はここ（数値を上げるとちょっとした操作では反応しなくなる）
     var sections = Array.prototype.slice.call(document.querySelectorAll('.snap-section'));
     var locked = false;
 
@@ -139,7 +140,7 @@
     scrollContainer.addEventListener(
       'wheel',
       function (e) {
-        if (Math.abs(e.deltaY) < 4) return;
+        if (Math.abs(e.deltaY) < MIN_DELTA) return;
         e.preventDefault();
         if (locked) return;
         goToIndex(currentIndex() + (e.deltaY > 0 ? 1 : -1));
