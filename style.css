@@ -73,16 +73,17 @@ button {
 }
 
 /* ------------------------------------------------------------
-   2. 全体レイアウト・Scroll Snap
+   2. 全体レイアウト・セクション送り
+   ------------------------------------------------------------
+   CSSのScroll Snapではなく、script.js側でホイール／スワイプ操作を
+   検知して1セクションずつ動かす方式（overflow-y:hiddenにして
+   ネイティブのスクロールに任せず、常にJS制御下に置く）。
    ------------------------------------------------------------ */
 .scroll-container {
   height: 100vh;
   height: 100dvh; /* モバイルのアドレスバー分の誤差を吸収 */
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
   background: var(--color-bg); /* 幅の帯の外側（大画面PCの左右余白）に敷く背景 */
 }
 
@@ -94,8 +95,6 @@ button {
   margin-right: auto;
   height: 100vh;
   height: 100dvh;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -432,10 +431,6 @@ button {
    「視差効果を減らす」設定のユーザーにはアニメーションを簡略化
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  .scroll-container {
-    scroll-behavior: auto;
-  }
-
   [data-animate] {
     transition: opacity 0.4s ease;
     transform: none;

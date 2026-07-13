@@ -82,70 +82,108 @@
   }
 
   /* ------------------------------------------------------------
-     3. HEROの「SCROLL」ボタン：次のセクションへスムーズスクロール
-     ------------------------------------------------------------ */
-  function initScrollCue() {
-    var cue = document.getElementById('scrollCue');
-    if (!cue) return;
-
-    cue.addEventListener('click', function () {
-      var hero = document.getElementById('hero');
-      var next = hero.nextElementSibling;
-      if (next) {
-        next.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
-      }
-    });
-  }
-
-  /* ------------------------------------------------------------
-     4. PC向け：ホイール操作の高速スナップ
+     3〜4. セクション間ナビゲーション（PC：ホイール／スマホ：スワイプ）
      ------------------------------------------------------------
-     トラックパッド／マウスホイールの慣性まかせだとセクション間の
-     移動がもたついて感じるため、ホイール操作1回につき1セクション分だけ
-     scrollIntoView(smooth) でジャンプさせている（ブラウザ標準の
-     スムーズスクロールに任せるため軽量・安定）。
-     スクロールの速さを変えたい場合は LOCK_DURATION（ミリ秒）を調整する。
-     タッチ操作（スマホ）はブラウザ標準のScroll Snapに任せているため対象外。
+     CSSのScroll Snapではなく、JavaScriptで1操作＝1セクション分だけ
+     動かす方式。requestAnimationFrameで自前のイージングつきスクロール
+     （約180ms）を行い、キビキビした遷移にしている。
+     ・速さを変えたい場合は DURATION（ミリ秒）を調整
+     ・反応の鈍感さを変えたい場合は MIN_DELTA（PC）/ SWIPE_THRESHOLD（スマホ）を調整
+     ・慣性スクロールで連続ジャンプしないよう LOCK_DURATION の間だけ操作を無視する
      ------------------------------------------------------------ */
-  function initFastSnap() {
-    if (prefersReducedMotion) return;
-    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return; // PC相当のみ対象
-
-    var LOCK_DURATION = 700; // ← スクロール速度の調整はここ（数値を小さくすると速くなる。トラックパッドの慣性で連続ジャンプしない程度の余裕を残すこと）
-    var MIN_DELTA = 30; // ← 反応の鈍感さの調整はここ（数値を上げるとちょっとした操作では反応しなくなる）
+  function initSectionNav() {
     var sections = Array.prototype.slice.call(document.querySelectorAll('.snap-section'));
+    var currentIndex = 0;
     var locked = false;
 
-    function currentIndex() {
-      var top = scrollContainer.scrollTop;
-      var closest = 0;
-      var minDiff = Infinity;
-      sections.forEach(function (sec, i) {
-        var diff = Math.abs(sec.offsetTop - top);
-        if (diff < minDiff) {
-          minDiff = diff;
-          closest = i;
-        }
-      });
-      return closest;
+    var DURATION = prefersReducedMotion ? 0 : 180; // ← 遷移速度の調整はここ
+    var LOCK_DURATION = 550; // ← 慣性による誤爆防止のロック時間
+    var MIN_DELTA = 10; // ← PCホイールの反応しきい値
+    var SWIPE_THRESHOLD = 40; // ← スマホのスワイプ判定のしきい値（px）
+
+    function easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
     }
 
-    function goToIndex(index) {
-      index = Math.max(0, Math.min(sections.length - 1, index));
+    function smoothScrollTo(targetTop) {
+      if (DURATION === 0) {
+        scrollContainer.scrollTop = targetTop;
+        return;
+      }
+      var start = scrollContainer.scrollTop;
+      var distance = targetTop - start;
+      var startTime = null;
+
+      function step(now) {
+        if (!startTime) startTime = now;
+        var t = Math.min((now - startTime) / DURATION, 1);
+        scrollContainer.scrollTop = start + distance * easeOutCubic(t);
+        if (t < 1) window.requestAnimationFrame(step);
+      }
+      window.requestAnimationFrame(step);
+    }
+
+    function changeSection(nextIndex) {
+      nextIndex = Math.max(0, Math.min(sections.length - 1, nextIndex));
+      if (nextIndex === currentIndex) return;
       locked = true;
-      sections[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      currentIndex = nextIndex;
+      smoothScrollTo(sections[currentIndex].offsetTop);
       window.setTimeout(function () { locked = false; }, LOCK_DURATION);
     }
 
+    // 現在位置を監視し、初期表示や万一のズレにも追従させる
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting && !locked) {
+              currentIndex = sections.indexOf(entry.target);
+            }
+          });
+        },
+        { root: scrollContainer, threshold: 0.5 }
+      );
+      sections.forEach(function (s) { observer.observe(s); });
+    }
+
+    // HEROの「SCROLL」ボタン
+    var cue = document.getElementById('scrollCue');
+    if (cue) {
+      cue.addEventListener('click', function () { changeSection(currentIndex + 1); });
+    }
+
+    // PC：ホイール操作
     scrollContainer.addEventListener(
       'wheel',
       function (e) {
-        if (Math.abs(e.deltaY) < MIN_DELTA) return;
         e.preventDefault();
-        if (locked) return;
-        goToIndex(currentIndex() + (e.deltaY > 0 ? 1 : -1));
+        if (locked || Math.abs(e.deltaY) < MIN_DELTA) return;
+        changeSection(currentIndex + (e.deltaY > 0 ? 1 : -1));
       },
       { passive: false }
+    );
+
+    // スマホ：スワイプ操作
+    var startY = 0;
+    scrollContainer.addEventListener(
+      'touchstart',
+      function (e) {
+        if (locked) return;
+        startY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+
+    scrollContainer.addEventListener(
+      'touchend',
+      function (e) {
+        if (locked) return;
+        var diff = startY - e.changedTouches[0].clientY;
+        if (Math.abs(diff) < SWIPE_THRESHOLD) return; // 少し動いただけなら誤作動防止で無視
+        changeSection(currentIndex + (diff > 0 ? 1 : -1));
+      },
+      { passive: true }
     );
   }
 
@@ -173,8 +211,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     initFadeIn();
     initParallax();
-    initScrollCue();
-    initFastSnap();
+    initSectionNav();
     initFavoriteButtons();
   });
 })();
