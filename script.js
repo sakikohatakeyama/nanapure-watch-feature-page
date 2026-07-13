@@ -123,6 +123,8 @@
     );
 
     // スマホ：スワイプ操作
+    // touchmoveをpreventDefaultし、ドラッグ中に前のブロックがネイティブスクロールで
+    // わずかに動いて見える（ぬるっと残る）のを防ぎ、指を離した瞬間にスパッと切り替える
     var startY = 0;
     scrollContainer.addEventListener(
       'touchstart',
@@ -131,6 +133,14 @@
         startY = e.touches[0].clientY;
       },
       { passive: true }
+    );
+
+    scrollContainer.addEventListener(
+      'touchmove',
+      function (e) {
+        e.preventDefault();
+      },
+      { passive: false }
     );
 
     scrollContainer.addEventListener(
