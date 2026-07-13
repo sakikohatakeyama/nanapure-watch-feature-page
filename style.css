@@ -32,6 +32,8 @@
 
   --section-padding-mobile: 24px;
   --section-padding-pc: 64px;
+
+  --page-max-width: 1000px; /* ページ全体の最大幅。PCの大画面でもこの幅の帯として中央表示する */
 }
 
 * {
@@ -81,11 +83,15 @@ button {
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  background: var(--color-bg); /* 1000px幅の帯の外側（大画面PCの左右余白）に敷く背景 */
 }
 
 .snap-section {
   position: relative;
   width: 100%;
+  max-width: var(--page-max-width); /* PC・スマホともにページ本体は1000px幅の帯に収める */
+  margin-left: auto;
+  margin-right: auto;
   height: 100vh;
   height: 100dvh;
   scroll-snap-align: start;
@@ -300,12 +306,6 @@ button {
   .product-copy {
     font-size: 15px;
     max-width: 360px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .product-info {
-    padding: 0 96px;
   }
 }
 
