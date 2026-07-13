@@ -107,13 +107,14 @@ button {
 .hero-section {
   justify-content: flex-end;
   align-items: center;
-  background: #000;
 }
 
 .hero-media {
   position: absolute;
   inset: 0;
   z-index: 1;
+  /* object-fit:containで生まれる上下の余白（レターボックス）を画像の背景色に合わせる */
+  background: #30c1e5;
 }
 
 .hero-image {
@@ -281,6 +282,8 @@ button {
 
 .product-section--overlay .product-media {
   height: 100%;
+  /* object-fit:containで生まれる上下の余白（レターボックス）を画像の背景色に合わせる（上：赤／下：グレー） */
+  background: linear-gradient(to bottom, #c5292d 0%, #c5292d 45%, #e5e1e1 45%, #e5e1e1 100%);
 }
 
 .product-overlay-info {
