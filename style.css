@@ -267,26 +267,44 @@ button {
 }
 
 /* ------------------------------------------------------------
-   4-1. 商品セクション（画像に余白入り・ボタンのみ重ねる特殊構成）
+   4-1. 商品セクション（画像に余白入り・価格とボタンのみ重ねる特殊構成）
    ------------------------------------------------------------
-   LONGCHAMPのように、あらかじめ画像下部に余白を作ったデザインの
+   COACHのように、あらかじめ画像下部に余白を作ったデザインの
    場合に使う。画像をセクションいっぱいに表示し、その余白部分に
-   ボタンだけを重ねる。位置調整は --overlay-bottom で行う。
+   価格とボタンだけを重ねる。位置調整は --overlay-bottom で行う。
    ------------------------------------------------------------ */
 .product-section--overlay {
-  --overlay-bottom: 3%; /* ← 画像の余白位置に合わせてここを調整 */
+  --overlay-bottom: 2%; /* ← 画像の余白位置に合わせてここを調整 */
 }
 
 .product-section--overlay .product-media {
   height: 100%;
 }
 
-.product-actions--overlay {
+.product-overlay-info {
   position: absolute;
   left: 0;
   right: 0;
   bottom: var(--overlay-bottom);
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.product-price--overlay {
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.price-note {
+  font-size: 12px;
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.product-actions--overlay {
   justify-content: center;
 }
 
