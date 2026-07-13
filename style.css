@@ -1,0 +1,450 @@
+/* ============================================================
+   ななぷれ 腕時計特集ページ - style.css
+   ------------------------------------------------------------
+   目次
+   1. リセット / 共通変数
+   2. 全体レイアウト・Scroll Snap
+   3. HEROセクション
+   4. 商品セクション（共通・スマホファースト）
+   5. 商品セクション（PC：左右レイアウト）
+   6. クロージングセクション
+   7. ボタン / お気に入り
+   8. アニメーション（フェードイン）
+   9. アクセシビリティ配慮
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. リセット / 共通変数
+   ------------------------------------------------------------ */
+:root {
+  /* ブランドカラー：ここを変更すればサイト全体のアクセントカラーが変わります */
+  --color-accent: #a9825a;       /* ブランドカラー（ゴールド寄りのブラウン） */
+  --color-accent-soft: #cbb08c;  /* アクセントの淡色 */
+
+  --color-bg: #ffffff;           /* 白ベース */
+  --color-text: #1a1a1a;         /* 黒文字（純黒より少し柔らかく） */
+  --color-text-sub: #6b6b6b;     /* 補足テキスト */
+  --color-border: #e6e2dc;
+
+  --font-title: 'Shippori Mincho', serif;          /* タイトル：インパクト重視の明朝 */
+  --font-brand: 'Cormorant Garamond', serif;        /* 欧文ブランドロゴ用 */
+  --font-body: 'Noto Sans JP', sans-serif;          /* 本文：可読性重視 */
+
+  --section-padding-mobile: 24px;
+  --section-padding-pc: 64px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  /* iOSでのスクロールを滑らかに */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------
+   2. 全体レイアウト・Scroll Snap
+   ------------------------------------------------------------ */
+.scroll-container {
+  height: 100vh;
+  height: 100dvh; /* モバイルのアドレスバー分の誤差を吸収 */
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.snap-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------
+   3. HEROセクション
+   ------------------------------------------------------------ */
+.hero-section {
+  justify-content: flex-end;
+  align-items: center;
+  background: #000;
+}
+
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* パララックス用に少し拡大しておき、動かしても余白が出ないようにする */
+  transform: scale(1.15);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.65) 100%);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 0 24px 96px;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-brand);
+  font-size: 13px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: clamp(48px, 14vw, 88px);
+  letter-spacing: 0.08em;
+  margin-bottom: 16px;
+}
+
+.hero-lead {
+  font-size: 15px;
+  letter-spacing: 0.05em;
+  font-weight: 300;
+}
+
+.scroll-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.scroll-cue-line {
+  width: 1px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.7);
+  animation: scrollLine 1.8s ease-in-out infinite;
+}
+
+.scroll-cue-text {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  opacity: 0.85;
+}
+
+@keyframes scrollLine {
+  0%   { transform: scaleY(0); transform-origin: top; opacity: 0; }
+  40%  { transform: scaleY(1); transform-origin: top; opacity: 1; }
+  60%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
+  100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+}
+
+/* ------------------------------------------------------------
+   4. 商品セクション（共通・スマホファースト：縦積み）
+   ------------------------------------------------------------ */
+.product-section {
+  justify-content: flex-start;
+  background: var(--color-bg);
+}
+
+.product-media {
+  position: relative;
+  width: 100%;
+  height: 58%;
+  overflow: hidden;
+  background: #f4f2ef;
+}
+
+.product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* パララックス移動時に端が見切れないよう少し拡大 */
+  transform: scale(1.08);
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px var(--section-padding-mobile) 28px;
+}
+
+.product-brand {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--color-accent);
+  margin-bottom: 8px;
+}
+
+.product-name {
+  font-family: var(--font-title);
+  font-size: clamp(24px, 6vw, 32px);
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  margin-bottom: 12px;
+}
+
+.product-price {
+  font-size: 15px;
+  margin-bottom: 14px;
+  color: var(--color-text);
+}
+
+.price-value {
+  font-size: 22px;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.price-tax {
+  font-size: 13px;
+  color: var(--color-text-sub);
+}
+
+.product-copy {
+  font-size: 14px;
+  color: var(--color-text-sub);
+  margin-bottom: 22px;
+  letter-spacing: 0.02em;
+}
+
+.product-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ------------------------------------------------------------
+   5. 商品セクション（PC：左右レイアウト）
+   768px以上でスマホの縦積みから左右2カラムへ切り替え
+   ------------------------------------------------------------ */
+@media (min-width: 768px) {
+  .product-section {
+    flex-direction: row;
+  }
+
+  .product-media {
+    width: 58%;
+    height: 100%;
+  }
+
+  .product-info {
+    width: 42%;
+    height: 100%;
+    padding: 0 var(--section-padding-pc);
+  }
+
+  /* 偶数番目の商品は画像とテキストの左右を入れ替えて雑誌らしいリズムを作る */
+  .product-section:nth-of-type(even) {
+    flex-direction: row-reverse;
+  }
+
+  .product-name {
+    font-size: clamp(32px, 3vw, 44px);
+  }
+
+  .product-copy {
+    font-size: 15px;
+    max-width: 360px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .product-info {
+    padding: 0 96px;
+  }
+}
+
+/* ------------------------------------------------------------
+   6. クロージングセクション
+   ------------------------------------------------------------ */
+.closing-section {
+  justify-content: center;
+  align-items: center;
+  background: var(--color-text);
+  color: #fff;
+  text-align: center;
+}
+
+.closing-content {
+  padding: 0 24px;
+}
+
+.closing-eyebrow {
+  font-family: var(--font-brand);
+  font-size: 14px;
+  letter-spacing: 0.3em;
+  color: var(--color-accent-soft);
+  margin-bottom: 20px;
+}
+
+.closing-title {
+  font-family: var(--font-title);
+  font-size: clamp(26px, 6vw, 40px);
+  font-weight: 700;
+  line-height: 1.6;
+  margin-bottom: 36px;
+}
+
+/* ------------------------------------------------------------
+   7. ボタン / お気に入り
+   ------------------------------------------------------------ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 28px;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  border-radius: 999px;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-primary {
+  background: var(--color-text);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: var(--color-accent);
+}
+
+.btn-outline {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+}
+
+.btn-outline:hover {
+  background: #fff;
+  color: var(--color-text);
+}
+
+.btn-favorite {
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  background: #fff;
+}
+
+.btn-favorite:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* お気に入り登録済み状態（script.js が aria-pressed="true" のときに付与） */
+.btn-favorite[aria-pressed="true"] {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: #fbf6ef;
+}
+
+.btn-favorite[aria-pressed="true"] .heart-icon {
+  color: var(--color-accent);
+}
+
+.btn-favorite[aria-pressed="true"] .heart-icon::before {
+  content: "♥";
+}
+
+.heart-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* ------------------------------------------------------------
+   8. アニメーション（フェードイン）
+   IntersectionObserverでビューポートに入った要素に is-visible を付与
+   ------------------------------------------------------------ */
+[data-animate] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ------------------------------------------------------------
+   9. アクセシビリティ配慮
+   「視差効果を減らす」設定のユーザーにはアニメーションを簡略化
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-container {
+    scroll-behavior: auto;
+  }
+
+  [data-animate] {
+    transition: opacity 0.4s ease;
+    transform: none;
+  }
+
+  .scroll-cue-line {
+    animation: none;
+  }
+
+  .hero-image,
+  .product-image {
+    transform: none !important;
+  }
+}

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<!--
+  ============================================================
+  ななぷれ 腕時計 特集ページ
+  ------------------------------------------------------------
+  ・楽天GOLD（RMS）にそのままアップロードできる構成です。
+  ・フリーページとして丸ごとアップロードする場合はこのファイルをそのまま使用してください。
+  ・既存のGOLDテンプレート内の「フリーHTML」枠に貼り付ける場合は、
+    <body>内の <div class="scroll-container"> 以降のみを貼り付け、
+    style.css / script.js は店舗の共通ファイルとして読み込んでください。
+  ・画像URL、商品URL、価格、お気に入りボタンの差し替え箇所には
+    「▼差し替え▼」のコメントを付けています。検索して置き換えてください。
+  ============================================================
+-->
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>ななぷれ | 腕時計 特集 - 毎日を少し特別にする一本</title>
+<meta name="description" content="ななぷれが選ぶ、日常を格上げする腕時計特集。ギフトにも自分へのご褒美にも。">
+
+<!-- Google Fonts（見出し：明朝で雑誌のような品格 / 本文：可読性重視のゴシック） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=Noto+Sans+JP:wght@300;400;500;700&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============================================================
+     スクロールコンテナ（この中がScroll Snapの対象）
+     ============================================================ -->
+<div class="scroll-container" id="scrollContainer">
+
+  <!-- ============================================================
+       HERO（表紙セクション）
+       ============================================================ -->
+  <section class="hero-section snap-section" id="hero">
+    <div class="hero-media" data-parallax>
+      <!-- ▼▼ 表紙画像を差し替え（推奨サイズ：横1600px以上） ▼▼ -->
+      <img
+        src="https://image.rakuten.co.jp/YOUR_SHOP_ID/cabinet/feature/hero_watch_main.jpg"
+        alt="ななぷれ 腕時計特集"
+        class="hero-image"
+        loading="eager">
+      <!-- ▲▲ 表紙画像を差し替え ▲▲ -->
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content" data-animate>
+      <p class="hero-eyebrow">FEATURE COLLECTION</p>
+      <h1 class="hero-title">ななぷれ</h1>
+      <p class="hero-lead">毎日を少し特別にする、一本の腕時計。</p>
+    </div>
+
+    <button class="scroll-cue" id="scrollCue" type="button" aria-label="次のセクションへスクロール">
+      <span class="scroll-cue-line"></span>
+      <span class="scroll-cue-text">SCROLL</span>
+    </button>
+  </section>
+
+  <!-- ============================================================
+       商品セクション：ここから下を複製すれば商品を追加できます
+       複製時の差し替え箇所：
+         1. section の id（product-2 など重複しない値に）
+         2. 商品画像 src / alt
+         3. ブランド名（product-brand）
+         4. 商品名（product-name）
+         5. 価格（product-price）
+         6. キャッチコピー（product-copy）
+         7. 商品ページURL（btn-primary の href）
+         8. お気に入りボタン（楽天お気に入り登録コードに差し替え）
+       ============================================================ -->
+
+  <!-- ---------- 商品 1：SEIKO プロスペックス ダイバーズ ---------- -->
+  <section class="product-section snap-section" id="product-1">
+    <div class="product-media" data-parallax>
+      <!-- ▼▼ 商品画像を差し替え ▼▼ -->
+      <img
+        src="https://image.rakuten.co.jp/YOUR_SHOP_ID/cabinet/product/seiko_prospex_diver.jpg"
+        alt="SEIKO プロスペックス ダイバーズ"
+        class="product-image"
+        loading="lazy">
+      <!-- ▲▲ 商品画像を差し替え ▲▲ -->
+    </div>
+
+    <div class="product-info" data-animate>
+      <p class="product-brand">SEIKO</p>
+      <h2 class="product-name">プロスペックス ダイバーズ</h2>
+
+      <p class="product-price">
+        <!-- ▼ 価格を差し替え（税込価格） ▼ -->
+        <span class="price-value">79,800</span><span class="price-tax">円（税込）</span>
+        <!-- ▲ 価格を差し替え ▲ -->
+      </p>
+
+      <p class="product-copy">毎日を少し特別にする一本。</p>
+
+      <div class="product-actions">
+        <!-- ▼ 商品ページURLを差し替え ▼ -->
+        <a class="btn btn-primary" href="https://item.rakuten.co.jp/YOUR_SHOP_ID/YOUR_ITEM_ID_1/" target="_blank" rel="noopener">
+          詳しく見る
+        </a>
+        <!-- ▲ 商品ページURLを差し替え ▲ -->
+
+        <!--
+          ▼▼ 楽天お気に入り登録ボタンに差し替え ▼▼
+          ここはデザイン確認用の仮ボタンです。
+          楽天が発行する「お気に入り登録」ボタンのコード（RMS管理画面から取得）に
+          置き換えてください。置き換え後、data-favorite 属性とscript.js内の
+          対応処理は不要になった場合は削除して構いません。
+        -->
+        <button class="btn btn-favorite" type="button" data-favorite aria-pressed="false" aria-label="お気に入りに登録">
+          <span class="heart-icon" aria-hidden="true">♡</span><span class="favorite-label">お気に入り</span>
+        </button>
+        <!-- ▲▲ 楽天お気に入り登録ボタンに差し替え ▲▲ -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 商品 2：CITIZEN アテッサ ---------- -->
+  <section class="product-section snap-section" id="product-2">
+    <div class="product-media" data-parallax>
+      <!-- ▼▼ 商品画像を差し替え ▼▼ -->
+      <img
+        src="https://image.rakuten.co.jp/YOUR_SHOP_ID/cabinet/product/citizen_attesa.jpg"
+        alt="CITIZEN アテッサ"
+        class="product-image"
+        loading="lazy">
+      <!-- ▲▲ 商品画像を差し替え ▲▲ -->
+    </div>
+
+    <div class="product-info" data-animate>
+      <p class="product-brand">CITIZEN</p>
+      <h2 class="product-name">アテッサ エコ・ドライブ</h2>
+
+      <p class="product-price">
+        <!-- ▼ 価格を差し替え（税込価格） ▼ -->
+        <span class="price-value">98,000</span><span class="price-tax">円（税込）</span>
+        <!-- ▲ 価格を差し替え ▲ -->
+      </p>
+
+      <p class="product-copy">洗練された佇まいが、手元の品格を上げる。</p>
+
+      <div class="product-actions">
+        <!-- ▼ 商品ページURLを差し替え ▼ -->
+        <a class="btn btn-primary" href="https://item.rakuten.co.jp/YOUR_SHOP_ID/YOUR_ITEM_ID_2/" target="_blank" rel="noopener">
+          詳しく見る
+        </a>
+        <!-- ▲ 商品ページURLを差し替え ▲ -->
+
+        <!-- ▼▼ 楽天お気に入り登録ボタンに差し替え ▼▼ -->
+        <button class="btn btn-favorite" type="button" data-favorite aria-pressed="false" aria-label="お気に入りに登録">
+          <span class="heart-icon" aria-hidden="true">♡</span><span class="favorite-label">お気に入り</span>
+        </button>
+        <!-- ▲▲ 楽天お気に入り登録ボタンに差し替え ▲▲ -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 商品 3：CASIO オシアナス ---------- -->
+  <section class="product-section snap-section" id="product-3">
+    <div class="product-media" data-parallax>
+      <!-- ▼▼ 商品画像を差し替え ▼▼ -->
+      <img
+        src="https://image.rakuten.co.jp/YOUR_SHOP_ID/cabinet/product/casio_oceanus.jpg"
+        alt="CASIO オシアナス"
+        class="product-image"
+        loading="lazy">
+      <!-- ▲▲ 商品画像を差し替え ▲▲ -->
+    </div>
+
+    <div class="product-info" data-animate>
+      <p class="product-brand">CASIO</p>
+      <h2 class="product-name">オシアナス マンタ</h2>
+
+      <p class="product-price">
+        <!-- ▼ 価格を差し替え（税込価格） ▼ -->
+        <span class="price-value">128,000</span><span class="price-tax">円（税込）</span>
+        <!-- ▲ 価格を差し替え ▲ -->
+      </p>
+
+      <p class="product-copy">薄く、軽く、力強い。理想を凝縮した一本。</p>
+
+      <div class="product-actions">
+        <!-- ▼ 商品ページURLを差し替え ▼ -->
+        <a class="btn btn-primary" href="https://item.rakuten.co.jp/YOUR_SHOP_ID/YOUR_ITEM_ID_3/" target="_blank" rel="noopener">
+          詳しく見る
+        </a>
+        <!-- ▲ 商品ページURLを差し替え ▲ -->
+
+        <!-- ▼▼ 楽天お気に入り登録ボタンに差し替え ▼▼ -->
+        <button class="btn btn-favorite" type="button" data-favorite aria-pressed="false" aria-label="お気に入りに登録">
+          <span class="heart-icon" aria-hidden="true">♡</span><span class="favorite-label">お気に入り</span>
+        </button>
+        <!-- ▲▲ 楽天お気に入り登録ボタンに差し替え ▲▲ -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- 商品 4：ORIENT スタークラシック ---------- -->
+  <section class="product-section snap-section" id="product-4">
+    <div class="product-media" data-parallax>
+      <!-- ▼▼ 商品画像を差し替え ▼▼ -->
+      <img
+        src="https://image.rakuten.co.jp/YOUR_SHOP_ID/cabinet/product/orient_star_classic.jpg"
+        alt="ORIENT STAR クラシック"
+        class="product-image"
+        loading="lazy">
+      <!-- ▲▲ 商品画像を差し替え ▲▲ -->
+    </div>
+
+    <div class="product-info" data-animate>
+      <p class="product-brand">ORIENT STAR</p>
+      <h2 class="product-name">クラシック セミスケルトン</h2>
+
+      <p class="product-price">
+        <!-- ▼ 価格を差し替え（税込価格） ▼ -->
+        <span class="price-value">143,000</span><span class="price-tax">円（税込）</span>
+        <!-- ▲ 価格を差し替え ▲ -->
+      </p>
+
+      <p class="product-copy">時を刻む機構美を、いつも指先に。</p>
+
+      <div class="product-actions">
+        <!-- ▼ 商品ページURLを差し替え ▼ -->
+        <a class="btn btn-primary" href="https://item.rakuten.co.jp/YOUR_SHOP_ID/YOUR_ITEM_ID_4/" target="_blank" rel="noopener">
+          詳しく見る
+        </a>
+        <!-- ▲ 商品ページURLを差し替え ▲ -->
+
+        <!-- ▼▼ 楽天お気に入り登録ボタンに差し替え ▼▼ -->
+        <button class="btn btn-favorite" type="button" data-favorite aria-pressed="false" aria-label="お気に入りに登録">
+          <span class="heart-icon" aria-hidden="true">♡</span><span class="favorite-label">お気に入り</span>
+        </button>
+        <!-- ▲▲ 楽天お気に入り登録ボタンに差し替え ▲▲ -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       クロージングセクション（ショップトップへの導線）
+       ============================================================ -->
+  <section class="closing-section snap-section" id="closing">
+    <div class="closing-content" data-animate>
+      <p class="closing-eyebrow">ななぷれ</p>
+      <h2 class="closing-title">あなたの毎日に、<br>寄り添う一本を。</h2>
+      <!-- ▼ ショップトップURLを差し替え ▼ -->
+      <a class="btn btn-outline" href="https://www.rakuten.co.jp/YOUR_SHOP_ID/" target="_blank" rel="noopener">
+        SHOPへ戻る
+      </a>
+      <!-- ▲ ショップトップURLを差し替え ▲ -->
+    </div>
+  </section>
+
+</div><!-- /.scroll-container -->
+
+<script src="script.js"></script>
+</body>
+</html>
