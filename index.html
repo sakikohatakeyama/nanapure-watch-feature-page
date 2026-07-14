@@ -362,6 +362,16 @@
      リンク先（data-jump-to）は各商品セクションのidと対応させる。
      商品を増減した場合は、この一覧も合わせて増減してください。
      ============================================================ -->
+<!-- スマホ・タブレット用：目次を開くハンバーガーメニューのボタン（PCでは非表示） -->
+<button type="button" class="toc-toggle" id="tocToggle" aria-label="目次を開く" aria-controls="heroToc" aria-expanded="false">
+  <span class="toc-toggle-bar"></span>
+  <span class="toc-toggle-bar"></span>
+  <span class="toc-toggle-bar"></span>
+</button>
+
+<!-- スマホ・タブレット用：目次を閉じるための背景オーバーレイ -->
+<div class="toc-backdrop" id="tocBackdrop"></div>
+
 <aside class="hero-toc" id="heroToc" aria-label="特集の目次">
   <!-- クリックでページ最上部（HERO）に戻る -->
   <button type="button" class="hero-toc-top" data-jump-to="hero">

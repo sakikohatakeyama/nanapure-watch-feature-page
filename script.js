@@ -327,6 +327,43 @@
      RMS管理画面から発行される「お気に入り登録」ボタンのコードに
      置き換えてください。
      ------------------------------------------------------------ */
+  /* ------------------------------------------------------------
+     スマホ・タブレット用：ハンバーガーメニューで目次パネルを開閉する
+     ------------------------------------------------------------ */
+  function initTocToggle() {
+    var toggle = document.getElementById('tocToggle');
+    var toc = document.getElementById('heroToc');
+    var backdrop = document.getElementById('tocBackdrop');
+    if (!toggle || !toc || !backdrop) return;
+
+    function openToc() {
+      toc.classList.add('is-open');
+      backdrop.classList.add('is-open');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeToc() {
+      toc.classList.remove('is-open');
+      backdrop.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    toggle.addEventListener('click', function () {
+      if (toc.classList.contains('is-open')) {
+        closeToc();
+      } else {
+        openToc();
+      }
+    });
+
+    backdrop.addEventListener('click', closeToc);
+
+    // 目次内のリンクをクリックしたら閉じる（PCでは常時表示のため影響なし）
+    toc.querySelectorAll('[data-jump-to]').forEach(function (el) {
+      el.addEventListener('click', closeToc);
+    });
+  }
+
   function initFavoriteButtons() {
     var buttons = document.querySelectorAll('[data-favorite]');
 
@@ -346,6 +383,7 @@
     initSectionNav();
     initOverlayPosition();
     initHeroMarquee();
+    initTocToggle();
     initFavoriteButtons();
   });
 })();
