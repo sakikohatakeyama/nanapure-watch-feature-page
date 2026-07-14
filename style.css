@@ -365,15 +365,27 @@ button {
   }
 
   #product-1 .product-media {
-    background: linear-gradient(to bottom, #c5292d 0%, #c5292d 46%, #e5e1e0 46%, #e5e1e0 100%);
+    background: linear-gradient(to bottom, #e9b2c5 0%, #e9b2c5 46%, #e5e1e0 46%, #e5e1e0 100%);
   }
 
   #product-2 .product-media {
-    background: linear-gradient(to bottom, #0eb2e7 0%, #0eb2e7 46%, #e5e1e0 46%, #e5e1e0 100%);
+    background: linear-gradient(to bottom, #c5292d 0%, #c5292d 46%, #e5e1e0 46%, #e5e1e0 100%);
   }
 
   #product-3 .product-media {
     background: linear-gradient(to bottom, #258c6e 0%, #258c6e 46%, #e5e1e0 46%, #e5e1e0 100%);
+  }
+
+  #product-4 .product-media {
+    background: linear-gradient(to bottom, #0eb2e7 0%, #0eb2e7 46%, #e5e1e0 46%, #e5e1e0 100%);
+  }
+
+  #product-5 .product-media {
+    background: linear-gradient(to bottom, #0eb2e7 0%, #0eb2e7 46%, #e5e1e0 46%, #e5e1e0 100%);
+  }
+
+  #product-6 .product-media {
+    background: linear-gradient(to bottom, #d0b5a4 0%, #d0b5a4 46%, #e5e1e0 46%, #e5e1e0 100%);
   }
 }
 
@@ -659,8 +671,10 @@ button {
 }
 
 .hero-toc-top-image {
-  width: 100%;
+  width: 92%;
   height: auto;
+  margin: 0 auto;
+  display: block;
 }
 
 .hero-toc-list {
@@ -675,7 +689,7 @@ button {
   display: flex;
   align-items: center;
   gap: 14px;
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.5;
   transition: opacity 0.2s ease;
 }
