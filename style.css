@@ -621,66 +621,21 @@ button {
   }
 }
 
-.hero-toc-badge {
-  font-weight: 700;
-  line-height: 1.2;
-  margin-bottom: 16px;
-}
-
-.hero-toc-badge-num {
+.hero-toc-top {
   display: block;
-  font-family: var(--font-price);
-  font-size: 40px;
-}
-
-.hero-toc-badge-year {
-  display: block;
-  font-size: 12px;
-  letter-spacing: 0.05em;
-}
-
-.hero-toc-logo {
-  font-family: var(--font-brand);
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 1.2;
-  margin-bottom: 24px;
-}
-
-.hero-toc-logo span {
-  display: block;
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  margin-top: 4px;
-}
-
-.hero-toc-heading {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  width: 100%;
   margin-bottom: 32px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
 }
 
-.hero-toc-heading-tag {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background: var(--color-text);
-  color: #fff;
-  font-size: 11px;
-  letter-spacing: 0.05em;
+.hero-toc-top:hover {
+  opacity: 0.7;
 }
 
-.hero-toc-heading-text {
-  font-weight: 700;
-  font-size: 15px;
-  line-height: 1.5;
+.hero-toc-top-image {
+  width: 100%;
+  height: auto;
 }
 
 .hero-toc-list {
