@@ -220,9 +220,11 @@
     var sections = Array.prototype.slice.call(document.querySelectorAll('.product-section--overlay'));
     if (sections.length === 0) return;
 
-    var GAP_RATIO = 0.02; // ← 画像下端から何%上に重ねるか（画像側の余白位置に合わせて調整）
+    var GAP_RATIO_MOBILE = 0.02; // ← 画像下端から何%上に重ねるか（スマホ）
+    var GAP_RATIO_PC = 0.2;      // ← 画像下端から何%上に重ねるか（PC。スマホより余白に余裕があるため大きめ）
 
     function update() {
+      var gapRatio = window.innerWidth >= 768 ? GAP_RATIO_PC : GAP_RATIO_MOBILE;
       sections.forEach(function (section) {
         var img = section.querySelector('.product-image');
         var info = section.querySelector('.product-overlay-info');
@@ -230,7 +232,7 @@
 
         var sectionRect = section.getBoundingClientRect();
         var renderedImg = getRenderedImageRect(img);
-        var gap = renderedImg.height * GAP_RATIO;
+        var gap = renderedImg.height * gapRatio;
 
         info.style.bottom = (sectionRect.bottom - renderedImg.bottom + gap) + 'px';
       });
