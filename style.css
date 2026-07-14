@@ -236,7 +236,7 @@ button {
 .lead-section {
   justify-content: center;
   align-items: center;
-  background: #fff;
+  background: #fcff0a;
 }
 
 .lead-media {
@@ -364,10 +364,6 @@ button {
     background: #31c1e6;
   }
 
-  .lead-section {
-    background: #fcff0a;
-  }
-
   #product-1 .product-media {
     background: linear-gradient(to bottom, #e9b2c5 0%, #e9b2c5 46%, #e5e1e0 46%, #e5e1e0 100%);
   }
@@ -450,7 +446,7 @@ button {
   }
 
   .product-section--overlay {
-    --overlay-bottom: 9%; /* ← PCでは価格・ボタンをスマホより少し上に表示する */
+    --overlay-bottom: 13%; /* ← PCでは価格・ボタンをスマホより少し上に表示する */
   }
 
   .product-actions--overlay .btn {
@@ -696,9 +692,9 @@ button {
 .hero-toc-list a {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   font-family: var(--font-body);
-  font-size: 19px;
+  font-size: 14px;
   line-height: 1.5;
   transition: opacity 0.2s ease;
 }
@@ -712,8 +708,20 @@ button {
   min-width: 1.1em;
   font-family: var(--font-price);
   font-weight: 500;
-  font-size: 27px;
+  font-size: 22px;
   line-height: 1;
+}
+
+/* PCは横幅に余裕があるため、目次の文字・数字の間隔をスマホより広めに戻す */
+@media (min-width: 1300px) {
+  .hero-toc-list a {
+    gap: 16px;
+    font-size: 19px;
+  }
+
+  .hero-toc-num {
+    font-size: 27px;
+  }
 }
 
 /* ------------------------------------------------------------
