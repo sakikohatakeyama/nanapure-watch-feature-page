@@ -113,12 +113,21 @@
       window.requestAnimationFrame(step);
     }
 
+    // 現在いるブロックに対応する目次の項目を太字にする（現在地の目印）
+    function updateTocActive() {
+      var currentId = sections[currentIndex] && sections[currentIndex].id;
+      document.querySelectorAll('.hero-toc-list a').forEach(function (a) {
+        a.classList.toggle('is-active', a.getAttribute('data-jump-to') === currentId);
+      });
+    }
+
     function changeSection(nextIndex) {
       nextIndex = Math.max(0, Math.min(sections.length - 1, nextIndex));
       if (nextIndex === currentIndex) return;
       locked = true;
       currentIndex = nextIndex;
       smoothScrollTo(sections[currentIndex].offsetTop);
+      updateTocActive();
       window.setTimeout(function () { locked = false; }, LOCK_DURATION);
     }
 
@@ -129,6 +138,7 @@
           entries.forEach(function (entry) {
             if (entry.isIntersecting && !locked) {
               currentIndex = sections.indexOf(entry.target);
+              updateTocActive();
             }
           });
         },
