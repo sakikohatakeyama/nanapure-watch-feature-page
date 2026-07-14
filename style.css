@@ -203,6 +203,9 @@ button {
   right: 0;
   z-index: 2;
   overflow: hidden;
+  /* バッグが両端でスパッと切れて見えないよう、端をふわっと透明にフェードさせる */
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 10%, #000 90%, transparent 100%);
 }
 
 .hero-bag-track {
