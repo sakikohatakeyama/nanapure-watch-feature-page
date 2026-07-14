@@ -364,17 +364,6 @@
     });
   }
 
-  function initFavoriteButtons() {
-    var buttons = document.querySelectorAll('[data-favorite]');
-
-    buttons.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var pressed = btn.getAttribute('aria-pressed') === 'true';
-        btn.setAttribute('aria-pressed', String(!pressed));
-      });
-    });
-  }
-
   /* ------------------------------------------------------------
      初期化
      ------------------------------------------------------------ */
@@ -384,6 +373,5 @@
     initOverlayPosition();
     initHeroMarquee();
     initTocToggle();
-    initFavoriteButtons();
   });
 })();
