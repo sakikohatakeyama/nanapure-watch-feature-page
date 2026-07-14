@@ -364,6 +364,10 @@ button {
     background: #31c1e6;
   }
 
+  .lead-section {
+    background: #fcff0a;
+  }
+
   #product-1 .product-media {
     background: linear-gradient(to bottom, #e9b2c5 0%, #e9b2c5 46%, #e5e1e0 46%, #e5e1e0 100%);
   }
@@ -398,21 +402,21 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 14px;
 }
 
 .product-price--overlay {
   margin-bottom: 0;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.2;
 }
 
 .product-price--overlay .price-value {
-  font-size: 23px;
+  font-size: 25px;
 }
 
 .price-note {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-accent);
   font-weight: 600;
 }
@@ -422,8 +426,8 @@ button {
 }
 
 .product-actions--overlay .btn {
-  padding: 14px 28px;
-  font-size: 13px;
+  padding: 15px 30px;
+  font-size: 14px;
 }
 
 /* ------------------------------------------------------------
@@ -445,21 +449,25 @@ button {
     max-width: 360px;
   }
 
+  .product-section--overlay {
+    --overlay-bottom: 9%; /* ← PCでは価格・ボタンをスマホより少し上に表示する */
+  }
+
   .product-actions--overlay .btn {
-    padding: 15px 30px;
-    font-size: 13px;
+    padding: 16px 32px;
+    font-size: 15px;
   }
 
   .product-price--overlay {
-    font-size: 16px;
+    font-size: 17px;
   }
 
   .product-price--overlay .price-value {
-    font-size: 25px;
+    font-size: 27px;
   }
 
   .price-note {
-    font-size: 14px;
+    font-size: 15px;
   }
 }
 
@@ -610,7 +618,7 @@ button {
    できてしまうため、paddingで余白そのものを持たせる方式にしている）。
    ------------------------------------------------------------ */
 :root {
-  --toc-width: 380px; /* ← 目次パネルの幅 */
+  --toc-width: 440px; /* ← 目次パネルの幅 */
   --toc-gap: 56px;    /* ← メインコンテンツと目次の間の余白（PC時） */
 }
 
@@ -671,7 +679,7 @@ button {
 }
 
 .hero-toc-top-image {
-  width: 92%;
+  width: 78%;
   height: auto;
   margin: 0 auto;
   display: block;
@@ -688,8 +696,8 @@ button {
 .hero-toc-list a {
   display: flex;
   align-items: center;
-  gap: 14px;
-  font-size: 17px;
+  gap: 16px;
+  font-size: 19px;
   line-height: 1.5;
   transition: opacity 0.2s ease;
 }
@@ -703,7 +711,7 @@ button {
   min-width: 1.1em;
   font-family: var(--font-price);
   font-weight: 700;
-  font-size: 24px;
+  font-size: 27px;
   line-height: 1;
 }
 
