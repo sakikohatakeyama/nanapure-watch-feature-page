@@ -681,7 +681,7 @@ button {
 .hero-toc-top-image {
   width: 78%;
   height: auto;
-  margin: 0 auto;
+  margin: 0;
   display: block;
 }
 
@@ -697,6 +697,7 @@ button {
   display: flex;
   align-items: center;
   gap: 16px;
+  font-family: var(--font-body);
   font-size: 19px;
   line-height: 1.5;
   transition: opacity 0.2s ease;
@@ -710,7 +711,7 @@ button {
   flex-shrink: 0;
   min-width: 1.1em;
   font-family: var(--font-price);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 27px;
   line-height: 1;
 }
