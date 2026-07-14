@@ -40,12 +40,32 @@
     <div class="hero-media">
       <!-- ▼▼ 表紙画像を差し替え（推奨サイズ：横1600px以上） ▼▼ -->
       <img
-        src="images/kanban.jpg"
+        src="images/kanban2.jpg"
         alt="ななぷれ 腕時計特集"
         class="hero-image"
         loading="eager">
       <!-- ▲▲ 表紙画像を差し替え ▲▲ -->
       <!-- 看板画像自体にタイトル・コピーが入っているため、HTML側の文字オーバーレイ（hero-content）は非表示にしている -->
+    </div>
+
+    <!-- 看板画像の空白帯にバッグを横スライドで流すエリア（位置はscript.jsで画像の実際の描画範囲に合わせて計算） -->
+    <div class="hero-bag-marquee" aria-hidden="true">
+      <div class="hero-bag-track">
+        <!-- ▼▼ バッグ画像を差し替え（追加・削除もこの並びを複製/削除するだけでOK） ▼▼ -->
+        <img src="images/bag01.png" alt="" class="hero-bag">
+        <img src="images/bag02.png" alt="" class="hero-bag">
+        <img src="images/bag03.png" alt="" class="hero-bag">
+        <img src="images/bag04.png" alt="" class="hero-bag">
+        <img src="images/bag05.png" alt="" class="hero-bag">
+        <!-- ▲▲ バッグ画像を差し替え ▲▲ -->
+        <!-- ここから下は上と同じ並びの複製。ループが途切れずシームレスに見えるようにするための仕組みなので、
+             上の画像を差し替えたら、こちらも同じ内容に合わせてください -->
+        <img src="images/bag01.png" alt="" class="hero-bag">
+        <img src="images/bag02.png" alt="" class="hero-bag">
+        <img src="images/bag03.png" alt="" class="hero-bag">
+        <img src="images/bag04.png" alt="" class="hero-bag">
+        <img src="images/bag05.png" alt="" class="hero-bag">
+      </div>
     </div>
 
     <button class="scroll-cue" id="scrollCue" type="button" aria-label="次のセクションへスクロール">

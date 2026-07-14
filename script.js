@@ -14,6 +14,38 @@
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ------------------------------------------------------------
+     object-fit:contain で実際に描画されている画像範囲
+     （レターボックスを除いた部分）を計算する共通関数。
+     getBoundingClientRect() は<img>要素の外枠サイズを返すだけで、
+     containで実際に描画されている範囲は教えてくれないため、
+     naturalWidth/naturalHeightから自前で計算し直している。
+     ------------------------------------------------------------ */
+  function getRenderedImageRect(img) {
+    var box = img.getBoundingClientRect();
+    var boxRatio = box.width / box.height;
+    var imgRatio = img.naturalWidth / img.naturalHeight;
+    var width, height;
+
+    if (imgRatio > boxRatio) {
+      width = box.width;
+      height = box.width / imgRatio;
+    } else {
+      height = box.height;
+      width = box.height * imgRatio;
+    }
+
+    var offsetY = (box.height - height) / 2;
+    var offsetX = (box.width - width) / 2;
+    return {
+      top: box.top + offsetY,
+      bottom: box.top + offsetY + height,
+      left: box.left + offsetX,
+      width: width,
+      height: height
+    };
+  }
+
+  /* ------------------------------------------------------------
      1. フェードイン演出（IntersectionObserver）
      data-animate 属性を持つ要素が画面内に入ったら is-visible を付与
      ------------------------------------------------------------ */
@@ -172,25 +204,6 @@
 
     var GAP_RATIO = 0.02; // ← 画像下端から何%上に重ねるか（画像側の余白位置に合わせて調整）
 
-    // object-fit:contain で実際に描画されている画像範囲（レターボックスを除いた部分）を計算する
-    function getRenderedImageRect(img) {
-      var box = img.getBoundingClientRect();
-      var boxRatio = box.width / box.height;
-      var imgRatio = img.naturalWidth / img.naturalHeight;
-      var width, height;
-
-      if (imgRatio > boxRatio) {
-        width = box.width;
-        height = box.width / imgRatio;
-      } else {
-        height = box.height;
-        width = box.height * imgRatio;
-      }
-
-      var offsetY = (box.height - height) / 2;
-      return { bottom: box.top + offsetY + height, height: height };
-    }
-
     function update() {
       sections.forEach(function (section) {
         var img = section.querySelector('.product-image');
@@ -220,6 +233,39 @@
   }
 
   /* ------------------------------------------------------------
+     3-1. HERO：バッグが横に流れるエリアの位置調整
+     ------------------------------------------------------------
+     看板画像の空白帯（画像の高さに対する割合）にバッグの帯が
+     重なるよう、画像の実際の描画範囲を基準に位置とサイズを計算する。
+     ------------------------------------------------------------ */
+  function initHeroMarquee() {
+    var heroImg = document.querySelector('#hero .hero-image');
+    var marquee = document.querySelector('.hero-bag-marquee');
+    if (!heroImg || !marquee) return;
+
+    var TOP_RATIO = 0.36;    // ← バッグ帯の開始位置（画像の高さに対する割合。看板画像の空白帯に合わせて調整）
+    var HEIGHT_RATIO = 0.33; // ← バッグ帯の高さ（画像の高さに対する割合）
+
+    function update() {
+      if (!heroImg.complete || !heroImg.naturalWidth) return;
+
+      var sectionRect = document.getElementById('hero').getBoundingClientRect();
+      var rendered = getRenderedImageRect(heroImg);
+
+      marquee.style.top = (rendered.top - sectionRect.top + rendered.height * TOP_RATIO) + 'px';
+      marquee.style.height = (rendered.height * HEIGHT_RATIO) + 'px';
+    }
+
+    window.addEventListener('resize', update);
+
+    if (heroImg.complete) {
+      update();
+    } else {
+      heroImg.addEventListener('load', update);
+    }
+  }
+
+  /* ------------------------------------------------------------
      4. お気に入りボタン（ダミー実装）
      ------------------------------------------------------------
      楽天GOLDへ実装する際は、このブロックごと削除し、
@@ -244,6 +290,7 @@
     initFadeIn();
     initSectionNav();
     initOverlayPosition();
+    initHeroMarquee();
     initFavoriteButtons();
   });
 })();

@@ -191,6 +191,42 @@ button {
 }
 
 /* ------------------------------------------------------------
+   2-1. HERO：バッグが横に流れるエリア
+   ------------------------------------------------------------
+   看板画像の空白帯にバッグ画像を横スクロールで流す。
+   top/heightは script.js が画像の実際の描画範囲（レターボックスを
+   除いた部分）に合わせて計算し、インラインスタイルで設定する。
+   ------------------------------------------------------------ */
+.hero-bag-marquee {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-bag-track {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 24px;
+  width: max-content;
+  animation: heroBagScroll 18s linear infinite; /* ← 流れる速さの調整は秒数（18s）を変更 */
+}
+
+.hero-bag {
+  height: 100%;
+  width: auto;
+  flex-shrink: 0;
+}
+
+@keyframes heroBagScroll {
+  from { transform: translateX(0); }
+  /* 画像を2セット並べているので、ちょうど半分移動した時点で1周分＝シームレスにループする */
+  to   { transform: translateX(-50%); }
+}
+
+/* ------------------------------------------------------------
    3-1. リードセクション（表紙の次のイメージカット＋リード文）
    画像自体にコピーが入っているため、テキストオーバーレイなし
    ------------------------------------------------------------ */
@@ -513,6 +549,10 @@ button {
   }
 
   .scroll-cue-line {
+    animation: none;
+  }
+
+  .hero-bag-track {
     animation: none;
   }
 }
