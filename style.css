@@ -585,3 +585,129 @@ button {
     animation: none;
   }
 }
+
+/* ------------------------------------------------------------
+   10. HERO目次パネル（PCの広い画面のみ表示）
+   ------------------------------------------------------------
+   scroll-containerの外にposition:fixedで置き、スクロールしても
+   位置が動かないようにしている。目次を表示する幅では、
+   メインコンテンツ全体を目次の分だけ左にずらすことで、
+   「メイン＋目次」を1つの塊として画面中央にバランスさせている。
+   ------------------------------------------------------------ */
+.hero-toc {
+  display: none; /* 既定では非表示。十分広い画面でのみ表示する */
+}
+
+@media (min-width: 1300px) {
+  :root {
+    --toc-width: 320px; /* ← 目次パネルの幅 */
+    --toc-gap: 56px;    /* ← メインコンテンツと目次の間の余白 */
+  }
+
+  /* メイン＋目次の全体が画面中央にくるよう、メイン側を目次の分だけ左にずらす */
+  .scroll-container {
+    transform: translateX(calc((var(--toc-width) + var(--toc-gap)) / -2));
+  }
+
+  .hero-toc {
+    display: block;
+    position: fixed;
+    top: 50%;
+    left: calc(50% + (var(--page-max-width) / 2) - (var(--toc-width) / 2) + (var(--toc-gap) / 2));
+    transform: translateY(-50%);
+    width: var(--toc-width);
+    z-index: 10;
+    color: var(--color-text);
+  }
+}
+
+.hero-toc-badge {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.hero-toc-badge-num {
+  display: block;
+  font-family: var(--font-price);
+  font-size: 40px;
+}
+
+.hero-toc-badge-year {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+
+.hero-toc-logo {
+  font-family: var(--font-brand);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1.2;
+  margin-bottom: 24px;
+}
+
+.hero-toc-logo span {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+.hero-toc-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 32px;
+}
+
+.hero-toc-heading-tag {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: var(--color-text);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+
+.hero-toc-heading-text {
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.hero-toc-list {
+  list-style: none;
+}
+
+.hero-toc-list li + li {
+  margin-top: 18px;
+}
+
+.hero-toc-list a {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  transition: opacity 0.2s ease;
+}
+
+.hero-toc-list a:hover {
+  opacity: 0.6;
+}
+
+.hero-toc-num {
+  flex-shrink: 0;
+  min-width: 1.1em;
+  font-family: var(--font-price);
+  font-weight: 700;
+  font-size: 20px;
+}

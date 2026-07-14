@@ -143,6 +143,17 @@
       cue.addEventListener('click', function () { changeSection(currentIndex + 1); });
     }
 
+    // 目次パネルなど、data-jump-to="セクションid" を持つ要素から該当セクションへジャンプ
+    document.querySelectorAll('[data-jump-to]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        var targetId = el.getAttribute('data-jump-to');
+        var index = sections.findIndex(function (s) { return s.id === targetId; });
+        if (index === -1) return;
+        e.preventDefault();
+        changeSection(index);
+      });
+    });
+
     // PC：ホイール操作
     scrollContainer.addEventListener(
       'wheel',
