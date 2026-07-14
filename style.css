@@ -344,8 +344,34 @@ button {
 .product-section--overlay .product-media {
   height: 100%;
   /* 余白（レターボックス）はウィンドウの縦横比によって上下・左右どちらにも
-     出るため、画像ごとに色を変えず統一色にしている */
+     出るため、画像ごとに色を変えず統一色にしている（PC向けの既定値） */
   background: #fcff0a;
+}
+
+/* ------------------------------------------------------------
+   4-2. スマホでは余白（レターボックス）を画像ごとの色に合わせる
+   ------------------------------------------------------------
+   スマホは左右の帯（PCの800px幅の外側）が存在しないため、
+   画像の上下にできる余白だけが目立つ。ここだけは黄色にせず、
+   各画像の配色に合わせてシームレスに見えるようにする。
+   PC（768px以上）は上のfcff0aのまま変更しない。
+   ------------------------------------------------------------ */
+@media (max-width: 767px) {
+  .hero-media {
+    background: #31c1e6;
+  }
+
+  #product-1 .product-media {
+    background: linear-gradient(to bottom, #c5292d 0%, #c5292d 46%, #e5e1e0 46%, #e5e1e0 100%);
+  }
+
+  #product-2 .product-media {
+    background: linear-gradient(to bottom, #0eb2e7 0%, #0eb2e7 46%, #e5e1e0 46%, #e5e1e0 100%);
+  }
+
+  #product-3 .product-media {
+    background: linear-gradient(to bottom, #258c6e 0%, #258c6e 46%, #e5e1e0 46%, #e5e1e0 100%);
+  }
 }
 
 .product-overlay-info {
