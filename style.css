@@ -194,13 +194,13 @@ button {
    2-1. HERO：バッグが横に流れるエリア
    ------------------------------------------------------------
    看板画像の空白帯にバッグ画像を横スクロールで流す。
-   top/heightは script.js が画像の実際の描画範囲（レターボックスを
-   除いた部分）に合わせて計算し、インラインスタイルで設定する。
+   top/left/width/heightは script.js が画像の実際の描画範囲
+   （containで生まれる上下左右のレターボックスを除いた部分）に
+   合わせて計算し、インラインスタイルで設定する。こうすることで、
+   画像の外（背景色の部分）にバッグがはみ出さないようにしている。
    ------------------------------------------------------------ */
 .hero-bag-marquee {
   position: absolute;
-  left: 0;
-  right: 0;
   z-index: 2;
   overflow: hidden;
 }
@@ -211,6 +211,9 @@ button {
   height: 100%;
   gap: 24px;
   width: max-content;
+  /* --marquee-shiftはscript.jsが1セット分の正確なピクセル距離を計算して設定する。
+     読み込み前後の一瞬だけ使われる50%はあくまで保険用のフォールバック */
+  --marquee-shift: -50%;
   animation: heroBagScroll 34s linear infinite; /* ← 流れる速さの調整は秒数を変更（大きいほどゆっくり） */
 }
 
@@ -222,8 +225,8 @@ button {
 
 @keyframes heroBagScroll {
   from { transform: translateX(0); }
-  /* 画像を2セット並べているので、ちょうど半分移動した時点で1周分＝シームレスにループする */
-  to   { transform: translateX(-50%); }
+  /* --marquee-shiftの値ぶんだけ移動した時点で、ちょうど1セット分＝シームレスにループする */
+  to   { transform: translateX(var(--marquee-shift)); }
 }
 
 /* ------------------------------------------------------------

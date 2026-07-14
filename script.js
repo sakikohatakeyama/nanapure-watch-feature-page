@@ -233,20 +233,31 @@
   }
 
   /* ------------------------------------------------------------
-     3-1. HERO：バッグが横に流れるエリアの位置調整
+     3-1. HERO：バッグが横に流れるエリアの位置・ループ距離の調整
      ------------------------------------------------------------
      看板画像の空白帯（画像の高さに対する割合）にバッグの帯が
      重なるよう、画像の実際の描画範囲を基準に位置とサイズを計算する。
+     画像はcontainで表示されるため、上下だけでなく左右にも余白が
+     できることがあり、左右の余白まで含めてしまうと画像の外（背景色の
+     部分）にバッグがはみ出して見えるため、左右の位置・幅も実際の
+     描画範囲に合わせて絞り込む。
+
+     また、ループ位置をCSSの50%指定だけに頼ると、画像の読み込み
+     タイミングによっては1セット分の実際の幅とズレて、ループの
+     つなぎ目でバッグが表示されない瞬間ができることがあるため、
+     画像読み込み後にちょうど1セット分の正確なピクセル距離を計算し、
+     CSS変数として渡している。
      ------------------------------------------------------------ */
   function initHeroMarquee() {
     var heroImg = document.querySelector('#hero .hero-image');
     var marquee = document.querySelector('.hero-bag-marquee');
-    if (!heroImg || !marquee) return;
+    var track = document.querySelector('.hero-bag-track');
+    if (!heroImg || !marquee || !track) return;
 
     var TOP_RATIO = 0.36;    // ← バッグ帯の開始位置（画像の高さに対する割合。看板画像の空白帯に合わせて調整）
     var HEIGHT_RATIO = 0.33; // ← バッグ帯の高さ（画像の高さに対する割合）
 
-    function update() {
+    function updatePosition() {
       if (!heroImg.complete || !heroImg.naturalWidth) return;
 
       var sectionRect = document.getElementById('hero').getBoundingClientRect();
@@ -254,15 +265,48 @@
 
       marquee.style.top = (rendered.top - sectionRect.top + rendered.height * TOP_RATIO) + 'px';
       marquee.style.height = (rendered.height * HEIGHT_RATIO) + 'px';
+      marquee.style.left = (rendered.left - sectionRect.left) + 'px';
+      marquee.style.width = rendered.width + 'px';
     }
 
-    window.addEventListener('resize', update);
+    function updateLoopDistance() {
+      var images = Array.prototype.slice.call(track.querySelectorAll('.hero-bag'));
+      var half = images.length / 2;
+      if (half === 0) return;
+
+      // 前半セットの1枚目と、複製した後半セットの1枚目のoffsetLeftの差が
+      // ちょうど1セット分の距離になる（offsetLeftはtransformの影響を受けないため、
+      // アニメーション中でも正確に測れる）
+      var distance = images[half].offsetLeft - images[0].offsetLeft;
+      if (distance > 0) {
+        track.style.setProperty('--marquee-shift', '-' + distance + 'px');
+      }
+    }
+
+    window.addEventListener('resize', function () {
+      updatePosition();
+      updateLoopDistance();
+    });
 
     if (heroImg.complete) {
-      update();
+      updatePosition();
     } else {
-      heroImg.addEventListener('load', update);
+      heroImg.addEventListener('load', updatePosition);
     }
+
+    var bagImgs = Array.prototype.slice.call(track.querySelectorAll('.hero-bag'));
+    var loadedCount = 0;
+    bagImgs.forEach(function (img) {
+      if (img.complete) {
+        loadedCount++;
+      } else {
+        img.addEventListener('load', function () {
+          loadedCount++;
+          if (loadedCount === bagImgs.length) updateLoopDistance();
+        });
+      }
+    });
+    if (loadedCount === bagImgs.length) updateLoopDistance();
   }
 
   /* ------------------------------------------------------------
