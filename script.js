@@ -84,9 +84,10 @@
     var locked = false;
 
     var DURATION = prefersReducedMotion ? 0 : 180; // ← 遷移速度の調整はここ
-    var LOCK_DURATION = 1000; // ← 慣性による誤爆防止のロック時間（トラックパッドの余韻がこれより長いと2回分ジャンプすることがある）
+    var LOCK_DURATION = 1000; // ← PCホイール用の誤爆防止ロック時間（トラックパッドの余韻がこれより長いと2回分ジャンプすることがある）
+    var TOUCH_LOCK_DURATION = 450; // ← スマホのスワイプ用ロック時間。タッチはトラックパッドのような余韻がなく誤爆しにくいので短くし、連続で下にスワイプしやすくしている（小さいほど軽快）
     var MIN_DELTA = 10; // ← PCホイールの反応しきい値
-    var SWIPE_THRESHOLD = 40; // ← スマホのスワイプ判定のしきい値（px）
+    var SWIPE_THRESHOLD = 28; // ← スマホのスワイプ判定のしきい値（px。小さいほど軽いスワイプで反応する）
 
     function easeOutCubic(t) {
       return 1 - Math.pow(1 - t, 3);
@@ -118,14 +119,14 @@
       });
     }
 
-    function changeSection(nextIndex) {
+    function changeSection(nextIndex, lockDuration) {
       nextIndex = Math.max(0, Math.min(sections.length - 1, nextIndex));
       if (nextIndex === currentIndex) return;
       locked = true;
       currentIndex = nextIndex;
       smoothScrollTo(sections[currentIndex].offsetTop);
       updateTocActive();
-      window.setTimeout(function () { locked = false; }, LOCK_DURATION);
+      window.setTimeout(function () { locked = false; }, lockDuration || LOCK_DURATION);
     }
 
     // 現在位置を監視し、初期表示や万一のズレにも追従させる
@@ -199,7 +200,7 @@
         if (locked) return;
         var diff = startY - e.changedTouches[0].clientY;
         if (Math.abs(diff) < SWIPE_THRESHOLD) return; // 少し動いただけなら誤作動防止で無視
-        changeSection(currentIndex + (diff > 0 ? 1 : -1));
+        changeSection(currentIndex + (diff > 0 ? 1 : -1), TOUCH_LOCK_DURATION);
       },
       { passive: true }
     );
