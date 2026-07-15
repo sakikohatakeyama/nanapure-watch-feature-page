@@ -223,9 +223,11 @@
 
     var GAP_RATIO_MOBILE = 0.02; // ← 画像下端から何%上に重ねるか（スマホ）
     var GAP_RATIO_PC = 0.06;     // ← 画像下端から何%上に重ねるか（PC。画像内テキストの下端（約79%位置）と被らない範囲で調整）
+    var CONTENT_BOTTOM_RATIO_PC = 0.79; // ← 画像内テキスト（商品名など）の下端の位置（画像高さに対する割合）。ここから画像下端までが「余白帯」
 
     function update() {
-      var gapRatio = window.innerWidth >= 768 ? GAP_RATIO_PC : GAP_RATIO_MOBILE;
+      var isPC = window.innerWidth >= 768;
+      var gapRatio = isPC ? GAP_RATIO_PC : GAP_RATIO_MOBILE;
       sections.forEach(function (section) {
         var img = section.querySelector('.product-image');
         var info = section.querySelector('.product-overlay-info');
@@ -236,6 +238,21 @@
         var gap = renderedImg.height * gapRatio;
 
         info.style.bottom = (sectionRect.bottom - renderedImg.bottom + gap) + 'px';
+
+        // 拡大表示（100%超）で画像が小さくなると、余白帯（画像下端の余白）も小さくなるのに
+        // 価格・ボタンの高さは固定のままなので、余白帯からはみ出して上の写真に被ってしまう。
+        // 余白帯（gap〜画像内テキスト下端）に収まるよう、はみ出す分だけブロック全体を縮小する。
+        // transform-originを下端にしているので、縮小しても価格・ボタンは常に余白帯の中に留まる。
+        if (isPC) {
+          var bandHeight = renderedImg.height * (1 - CONTENT_BOTTOM_RATIO_PC); // 余白帯の高さ
+          var available = bandHeight - gap; // アンカー（gap）より上に使える余白の高さ
+          var naturalHeight = info.offsetHeight; // transformの影響を受けない実寸の高さ
+          var scale = naturalHeight > 0 ? Math.min(1, available / naturalHeight) : 1;
+          info.style.transformOrigin = 'center bottom';
+          info.style.transform = 'scale(' + scale + ')';
+        } else {
+          info.style.transform = '';
+        }
       });
     }
 
@@ -420,6 +437,53 @@
   }
 
   /* ------------------------------------------------------------
+     3-2. クロージングの白帯を「上の商品写真」と同じ幅にそろえる（PC）
+     ------------------------------------------------------------
+     商品写真は object-fit:contain で表示されるため、実際の描画幅は
+     ウィンドウの縦横比（＝表示倍率）で変わる。クロージングの白帯を
+     固定px幅にすると倍率変更でズレるので、代表の商品画像の実際の
+     描画幅を計算し、白帯の幅として毎回そろえる。これで表示率を
+     変えても白帯と写真の幅が一致し続ける。
+     スマホ（767px以下）は白フル幅のまま（CSSに任せる）。
+     ------------------------------------------------------------ */
+  function initClosingMatchWidth() {
+    var closingContent = document.querySelector('#closing .closing-content');
+    var refImg = document.querySelector('.product-section--overlay .product-image');
+    if (!closingContent || !refImg) return;
+
+    function update() {
+      if (window.innerWidth < 768) {
+        closingContent.style.width = ''; // スマホは白フル幅（CSSの既定に戻す）
+        return;
+      }
+      if (!refImg.complete || !refImg.naturalWidth) return;
+      var rendered = getRenderedImageRect(refImg);
+      closingContent.style.width = Math.round(rendered.width) + 'px';
+    }
+
+    function scheduleUpdate() {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(update);
+      });
+    }
+
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('pageshow', scheduleUpdate);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', scheduleUpdate);
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') scheduleUpdate();
+    });
+
+    if (refImg.complete) {
+      update();
+    } else {
+      refImg.addEventListener('load', update);
+    }
+  }
+
+  /* ------------------------------------------------------------
      4. お気に入りボタン（ダミー実装）
      ------------------------------------------------------------
      楽天GOLDへ実装する際は、このブロックごと削除し、
@@ -472,6 +536,7 @@
     initFadeIn();
     initSectionNav();
     initOverlayPosition();
+    initClosingMatchWidth();
     initHeroLogoPosition();
     initHeroMarquee();
     initTocToggle();
