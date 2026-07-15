@@ -672,13 +672,16 @@ button {
    できてしまうため、paddingで余白そのものを持たせる方式にしている）。
    ------------------------------------------------------------ */
 :root {
-  --toc-width: 450px; /* ← 目次パネルの幅 */
+  --toc-width: 380px; /* ← 目次パネルの幅（少しスリムにして、幅の狭いPCでも右端に余白が残るようにしている） */
   --toc-gap: 20px;    /* ← メインコンテンツと目次の間の余白（PC時） */
+  --toc-breakpoint: 1200px; /* ← 2カラム表示に切り替わる最小幅（= 本体800 + 余白20 + 目次380）。ここ未満はハンバーガーメニュー */
 }
 /* --page-max-widthは1.リセット/共通変数のブロックで800pxの固定値として定義済み。
    メイン・目次パネルともに常に固定幅とし、画面幅に応じて縮んだりしない。
-   横幅が800+20+450=1270px未満の場合は、2カラムを並べる余裕がないため、
-   スマホ・タブレット同様にハンバーガーメニューに切り替える。 */
+   横幅が800+20+380=1200px未満の場合は、2カラムを並べる余裕がないため、
+   スマホ・タブレット同様にハンバーガーメニューに切り替える。
+   （目次幅を狭めるほどこの切り替え幅が下がり、ブラウザの表示倍率を
+   変えてもレイアウトが崩れにくくなる） */
 
 .hero-toc {
   position: fixed;
@@ -702,7 +705,7 @@ button {
   transform: translateX(0);
 }
 
-@media (min-width: 1270px) {
+@media (min-width: 1200px) {
   /* メイン＋目次の全体が画面中央にくるよう、メイン側の中央寄せの
      基準位置を目次の分だけ左にずらす（scroll-container自体の
      背景幅はそのまま100%を保つので、右側に隙間はできない） */
@@ -710,16 +713,24 @@ button {
     padding-right: calc(var(--toc-width) + var(--toc-gap));
   }
 
+  /* 目次は画面の高さいっぱいの枠にして、その中で中身を縦センター表示する。
+     こうすると translateY(-50%) で天地からはみ出して切れる問題がなくなり、
+     画面が低い（＝拡大表示している）ときでも常に全項目が収まる。
+     万一それでも入りきらない極端に低い画面のときだけ、内部スクロールで
+     下まで見られるように overflow-y:auto を保険として付けている。 */
   .hero-toc {
-    top: 50%;
+    top: 0;
     right: auto;
     left: calc(50% + (var(--page-max-width) / 2) - (var(--toc-width) / 2) + (var(--toc-gap) / 2));
-    transform: translateY(-50%);
+    transform: none;
     width: var(--toc-width);
-    height: auto;
+    height: 100dvh;
     background: none;
-    padding: 0;
-    overflow: visible;
+    padding: 24px 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     transition: none;
   }
 }
@@ -788,25 +799,38 @@ button {
 }
 
 /* PCは横幅に余裕があるため、目次の文字・数字の間隔をスマホより広めに戻す */
-@media (min-width: 1270px) {
+@media (min-width: 1200px) {
   .hero-toc-top,
   .hero-toc-list {
-    max-width: 420px;
+    max-width: 340px;
   }
 
-  /* PCではロゴ画像の左右にパディングがない分、スマホより小さめの比率でも
-     1番長い目次の右端と揃うため、ここだけ比率を戻す */
+  /* 見出し画像は「幅の割合」と「画面の高さの割合」の両方で上限を決める。
+     画面が低い（＝拡大表示している）ときは max-height: 22vh が効いて画像が
+     自動で小さくなり、目次全体が常に画面内に収まる。width/heightをautoに
+     しているので縦横比は崩れない。 */
+  .hero-toc-top {
+    margin-bottom: 24px;
+  }
+
   .hero-toc-top-image {
-    width: 78%;
+    width: auto;
+    height: auto;
+    max-width: 66%;
+    max-height: 22vh;
+  }
+
+  .hero-toc-list li + li {
+    margin-top: 16px;
   }
 
   .hero-toc-list a {
-    gap: 16px;
-    font-size: 20px;
+    gap: 14px;
+    font-size: 18px;
   }
 
   .hero-toc-num {
-    font-size: 28px;
+    font-size: 24px;
   }
 }
 
@@ -854,9 +878,9 @@ button {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (min-width: 1270px) {
+@media (min-width: 1200px) {
   .toc-toggle {
-    display: none; /* PCでは常時表示の目次パネットがあるため不要 */
+    display: none; /* PCでは常時表示の目次パネルがあるため不要 */
   }
 }
 
