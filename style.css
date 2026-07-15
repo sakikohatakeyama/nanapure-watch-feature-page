@@ -501,7 +501,21 @@ button {
   text-align: center;
 }
 
+.closing-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.closing-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .closing-content {
+  position: relative;
+  z-index: 2;
   padding: 0 24px;
 }
 
@@ -529,6 +543,7 @@ button {
   left: 50%;
   bottom: 48px;
   transform: translateX(-50%);
+  z-index: 3;
   width: 64px;
   height: 64px;
   border-radius: 50%;
@@ -683,9 +698,12 @@ button {
        vwベースのclampで画面幅に応じて目次側を滑らかに縮められるようにし、
        page-max-width側も「収まる範囲で最大800px」に調整することで、
        ズームしても目次を保ったままレイアウトが破綻しないようにしている。 */
-    --toc-width: clamp(260px, 26vw, 440px);
-    --toc-gap: clamp(24px, 4vw, 56px);
-    --page-max-width: min(800px, calc(100vw - var(--toc-width) - var(--toc-gap)));
+    --toc-width: clamp(280px, 27vw, 440px);
+    --toc-gap: clamp(16px, 2vw, 40px);
+    /* 実効幅の丸め誤差（ブラウザのズーム表示時などに起こりうる）で
+       目次とメインコンテンツがぴったり接触して被って見えることが
+       ないよう、余分に12pxの安全マージンを引いておく */
+    --page-max-width: min(800px, calc(100vw - var(--toc-width) - var(--toc-gap) - 12px));
   }
 }
 
