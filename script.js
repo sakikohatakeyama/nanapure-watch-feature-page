@@ -255,6 +255,12 @@
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', scheduleUpdate);
     }
+    // お気に入りボタンはtarget="_blank"で別タブで開くため、ページ遷移は
+    // 発生せずタブが非表示になるだけ。タブを切り替えて戻ってきたタイミングも
+    // 拾えるようvisibilitychangeでも再計算する
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') scheduleUpdate();
+    });
 
     sections.forEach(function (section) {
       var img = section.querySelector('.product-image');
@@ -307,6 +313,9 @@
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', scheduleUpdate);
     }
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') scheduleUpdate();
+    });
 
     if (heroImg.complete) {
       updatePosition();
@@ -384,6 +393,9 @@
     if (window.visualViewport) {
       window.visualViewport.addEventListener('resize', scheduleUpdateAll);
     }
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') scheduleUpdateAll();
+    });
 
     if (heroImg.complete) {
       updatePosition();
