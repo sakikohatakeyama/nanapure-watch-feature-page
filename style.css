@@ -669,6 +669,16 @@ button {
   transform: translateY(0);
 }
 
+/* 価格・ボタン（overlay）のブロックは script.js が画像に合わせて transform:scale()
+   で縮小するため、フェードイン側で transform を使うと取り合いになり、0.9sの
+   トランジションで縮小が遅れて一瞬写真に被る。ここだけフェードを不透明度のみにし、
+   transform は scale 専用にする（＝拡大時の縮小が即時に反映される）。 */
+.product-overlay-info[data-animate],
+.product-overlay-info[data-animate].is-visible {
+  transform: none;
+  transition: opacity 0.9s ease;
+}
+
 /* ------------------------------------------------------------
    9. アクセシビリティ配慮
    「視差効果を減らす」設定のユーザーにはアニメーションを簡略化
