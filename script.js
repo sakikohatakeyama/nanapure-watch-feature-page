@@ -221,7 +221,7 @@
     if (sections.length === 0) return;
 
     var GAP_RATIO_MOBILE = 0.02; // ← 画像下端から何%上に重ねるか（スマホ）
-    var GAP_RATIO_PC = 0.2;      // ← 画像下端から何%上に重ねるか（PC。スマホより余白に余裕があるため大きめ）
+    var GAP_RATIO_PC = 0.06;     // ← 画像下端から何%上に重ねるか（PC。画像内テキストの下端（約79%位置）と被らない範囲で調整）
 
     function update() {
       var gapRatio = window.innerWidth >= 768 ? GAP_RATIO_PC : GAP_RATIO_MOBILE;
