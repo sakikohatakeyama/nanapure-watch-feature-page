@@ -426,6 +426,55 @@
      置き換えてください。
      ------------------------------------------------------------ */
   /* ------------------------------------------------------------
+     PCの目次パネル：幅・余白・メインコンテンツ幅をJSで計算
+     ------------------------------------------------------------
+     以前はCSSのclamp()/calc()/min()を何重にもネストして画面幅に
+     応じた値を求めていたが、ブラウザによって計算結果がずれ、
+     メインコンテンツが800pxを超えて表示される不具合があったため、
+     単純なJSの算数で確実に同じ結果になるようにしている。
+     ------------------------------------------------------------ */
+  function initTocLayout() {
+    var BREAKPOINT = 1024;   // ← この幅未満はハンバーガーメニュー（CSS側のbreakpointと合わせる）
+    var TOC_MIN = 280;       // ← 目次パネルの最小幅
+    var TOC_MAX = 440;       // ← 目次パネルの最大幅
+    var TOC_RATIO = 0.27;    // ← 画面幅に対する目次パネルの比率
+    var GAP_MIN = 16;        // ← メインコンテンツと目次の間の余白の最小値
+    var GAP_MAX = 40;        // ← 同、最大値
+    var GAP_RATIO = 0.02;    // ← 画面幅に対する余白の比率
+    var SAFETY_MARGIN = 12;  // ← 丸め誤差で被らないようにする余白
+    var PAGE_MAX_WIDTH = 800; // ← style.cssの--page-max-widthの既定値と合わせる
+
+    function clamp(value, min, max) {
+      return Math.min(Math.max(value, min), max);
+    }
+
+    function update() {
+      var vw = window.innerWidth;
+      var root = document.documentElement.style;
+
+      if (vw < BREAKPOINT) {
+        // スマホ・タブレット（ハンバーガーメニュー）ではJSでの上書きをやめ、
+        // style.css既定のCSS変数（固定値）に戻す
+        root.removeProperty('--toc-width');
+        root.removeProperty('--toc-gap');
+        root.removeProperty('--page-max-width');
+        return;
+      }
+
+      var tocWidth = clamp(vw * TOC_RATIO, TOC_MIN, TOC_MAX);
+      var tocGap = clamp(vw * GAP_RATIO, GAP_MIN, GAP_MAX);
+      var pageMaxWidth = Math.min(PAGE_MAX_WIDTH, vw - tocWidth - tocGap - SAFETY_MARGIN);
+
+      root.setProperty('--toc-width', tocWidth + 'px');
+      root.setProperty('--toc-gap', tocGap + 'px');
+      root.setProperty('--page-max-width', pageMaxWidth + 'px');
+    }
+
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  /* ------------------------------------------------------------
      スマホ・タブレット用：ハンバーガーメニューで目次パネルを開閉する
      ------------------------------------------------------------ */
   function initTocToggle() {
@@ -468,6 +517,7 @@
      初期化
      ------------------------------------------------------------ */
   document.addEventListener('DOMContentLoaded', function () {
+    initTocLayout();
     initFadeIn();
     initSectionNav();
     initOverlayPosition();
