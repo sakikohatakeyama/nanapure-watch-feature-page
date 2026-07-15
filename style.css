@@ -473,8 +473,8 @@ button {
 .closing-section {
   justify-content: center;
   align-items: center;
-  background: var(--color-text);
-  color: #fff;
+  background: #ffffff;
+  color: var(--color-text);
   text-align: center;
 }
 
@@ -482,20 +482,55 @@ button {
   padding: 0 24px;
 }
 
-.closing-eyebrow {
-  font-family: var(--font-brand);
-  font-size: 14px;
-  letter-spacing: 0.3em;
-  color: var(--color-accent-soft);
-  margin-bottom: 20px;
+.closing-logo-link {
+  display: inline-block;
+  transition: opacity 0.2s ease;
 }
 
-.closing-title {
-  font-family: var(--font-title);
-  font-size: clamp(26px, 6vw, 40px);
-  font-weight: 700;
-  line-height: 1.6;
-  margin-bottom: 36px;
+.closing-logo-link:hover {
+  opacity: 0.75;
+}
+
+.closing-logo {
+  width: 200px;
+  max-width: 55vw;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* ------------------------------------------------------------
+   6-1. クロージング：1番上（HERO）に戻るボタン
+   ------------------------------------------------------------ */
+.closing-top-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  animation: closingTopBounce 1.6s ease-in-out infinite;
+}
+
+.closing-top-btn:hover {
+  opacity: 0.8;
+}
+
+@keyframes closingTopBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(-10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing-top-btn {
+    animation: none;
+  }
 }
 
 /* ------------------------------------------------------------
