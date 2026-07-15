@@ -676,6 +676,19 @@ button {
   --toc-gap: 56px;    /* ← メインコンテンツと目次の間の余白（PC時） */
 }
 
+@media (min-width: 1024px) {
+  :root {
+    /* ブラウザの表示倍率（ズーム）を上げるとウィンドウの実効CSS幅が狭くなり、
+       固定pxのままだとメイン800px＋余白＋目次が収まりきらず崩れてしまう。
+       vwベースのclampで画面幅に応じて目次側を滑らかに縮められるようにし、
+       page-max-width側も「収まる範囲で最大800px」に調整することで、
+       ズームしても目次を保ったままレイアウトが破綻しないようにしている。 */
+    --toc-width: clamp(260px, 26vw, 440px);
+    --toc-gap: clamp(24px, 4vw, 56px);
+    --page-max-width: min(800px, calc(100vw - var(--toc-width) - var(--toc-gap)));
+  }
+}
+
 .hero-toc {
   position: fixed;
   top: 0;
@@ -698,7 +711,7 @@ button {
   transform: translateX(0);
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1024px) {
   /* メイン＋目次の全体が画面中央にくるよう、メイン側の中央寄せの
      基準位置を目次の分だけ左にずらす（scroll-container自体の
      背景幅はそのまま100%を保つので、右側に隙間はできない） */
@@ -784,7 +797,7 @@ button {
 }
 
 /* PCは横幅に余裕があるため、目次の文字・数字の間隔をスマホより広めに戻す */
-@media (min-width: 1300px) {
+@media (min-width: 1024px) {
   /* PCではロゴ画像の左右にパディングがない分、スマホより小さめの比率でも
      1番長い目次の右端と揃うため、ここだけ比率を戻す */
   .hero-toc-top-image {
@@ -845,7 +858,7 @@ button {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1024px) {
   .toc-toggle {
     display: none; /* PCでは常時表示の目次パネットがあるため不要 */
   }
