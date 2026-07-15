@@ -253,6 +253,41 @@
   }
 
   /* ------------------------------------------------------------
+     3-0. HERO：ロゴ（SHOPトップへのリンク）の位置調整
+     ------------------------------------------------------------
+     看板画像の実際の描画範囲（レターボックスを除いた範囲）を基準に、
+     画像内の余白部分にロゴが重なるよう位置とサイズを計算する。
+     ------------------------------------------------------------ */
+  function initHeroLogoPosition() {
+    var heroImg = document.querySelector('#hero .hero-image');
+    var logo = document.querySelector('.hero-logo-link');
+    if (!heroImg || !logo) return;
+
+    var TOP_RATIO = 0.0825;   // ← ロゴの上端位置（画像の高さに対する割合）
+    var LEFT_RATIO = 0.336;   // ← ロゴの左端位置（画像の幅に対する割合）
+    var WIDTH_RATIO = 0.331;  // ← ロゴの幅（画像の幅に対する割合）
+
+    function updatePosition() {
+      if (!heroImg.complete || !heroImg.naturalWidth) return;
+
+      var sectionRect = document.getElementById('hero').getBoundingClientRect();
+      var rendered = getRenderedImageRect(heroImg);
+
+      logo.style.top = (rendered.top - sectionRect.top + rendered.height * TOP_RATIO) + 'px';
+      logo.style.left = (rendered.left - sectionRect.left + rendered.width * LEFT_RATIO) + 'px';
+      logo.style.width = (rendered.width * WIDTH_RATIO) + 'px';
+    }
+
+    window.addEventListener('resize', updatePosition);
+
+    if (heroImg.complete) {
+      updatePosition();
+    } else {
+      heroImg.addEventListener('load', updatePosition);
+    }
+  }
+
+  /* ------------------------------------------------------------
      3-1. HERO：バッグが横に流れるエリアの位置・ループ距離の調整
      ------------------------------------------------------------
      看板画像の空白帯（画像の高さに対する割合）にバッグの帯が
@@ -348,12 +383,14 @@
     function openToc() {
       toc.classList.add('is-open');
       backdrop.classList.add('is-open');
+      toggle.classList.add('is-open');
       toggle.setAttribute('aria-expanded', 'true');
     }
 
     function closeToc() {
       toc.classList.remove('is-open');
       backdrop.classList.remove('is-open');
+      toggle.classList.remove('is-open');
       toggle.setAttribute('aria-expanded', 'false');
     }
 
@@ -380,6 +417,7 @@
     initFadeIn();
     initSectionNav();
     initOverlayPosition();
+    initHeroLogoPosition();
     initHeroMarquee();
     initTocToggle();
   });

@@ -199,6 +199,29 @@ button {
    合わせて計算し、インラインスタイルで設定する。こうすることで、
    画像の外（背景色の部分）にバッグがはみ出さないようにしている。
    ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   2-0. HERO：ロゴ（SHOPトップへのリンク）
+   ------------------------------------------------------------
+   看板画像内の空白部分にロゴ画像を重ねて表示する。
+   top/left/widthは script.js が画像の実際の描画範囲に合わせて計算する。
+   ------------------------------------------------------------ */
+.hero-logo-link {
+  position: absolute;
+  z-index: 3;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.hero-logo-link:hover {
+  opacity: 0.75;
+}
+
+.hero-logo-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
 .hero-bag-marquee {
   position: absolute;
   z-index: 2;
@@ -795,12 +818,31 @@ button {
   align-items: center;
   justify-content: center;
   gap: 5px;
+  transition: transform 0.4s ease;
+}
+
+/* 開いている間はくるっと回転させ、閉じるボタンだと分かるよう見た目も変える */
+.toc-toggle.is-open {
+  transform: rotate(180deg);
 }
 
 .toc-toggle-bar {
   width: 22px;
   height: 2px;
   background: #fff;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.toc-toggle.is-open .toc-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.toc-toggle.is-open .toc-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.toc-toggle.is-open .toc-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
 
 @media (min-width: 1300px) {
