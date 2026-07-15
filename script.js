@@ -238,7 +238,23 @@
       });
     }
 
-    window.addEventListener('resize', update);
+    // お気に入りボタン等で外部サイトへ遷移してから「戻る」で復帰した際、
+    // スマホSafariはアドレスバーの表示/非表示で実際の高さが変わるのに
+    // resizeやloadが発火せず、位置がズレたまま固定されてしまうことがある。
+    // そのため resize に加えて pageshow（bfcache復帰）・visualViewportの
+    // resize（アドレスバーの表示切り替え）でも再計算し、さらに切り替え
+    // アニメーション中の古いレイアウト値を拾わないよう2フレーム分遅らせる。
+    function scheduleUpdate() {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(update);
+      });
+    }
+
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('pageshow', scheduleUpdate);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', scheduleUpdate);
+    }
 
     sections.forEach(function (section) {
       var img = section.querySelector('.product-image');
@@ -278,7 +294,19 @@
       logo.style.width = (rendered.width * WIDTH_RATIO) + 'px';
     }
 
-    window.addEventListener('resize', updatePosition);
+    function scheduleUpdate() {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(updatePosition);
+      });
+    }
+
+    // アドレスバーの表示切り替えなどで高さだけ変わるケースに備え、
+    // resize / pageshow（外部サイトから「戻る」で復帰した際）/ visualViewportのresizeで再計算
+    window.addEventListener('resize', scheduleUpdate);
+    window.addEventListener('pageshow', scheduleUpdate);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', scheduleUpdate);
+    }
 
     if (heroImg.complete) {
       updatePosition();
@@ -338,10 +366,24 @@
       }
     }
 
-    window.addEventListener('resize', function () {
+    function updateAll() {
       updatePosition();
       updateLoopDistance();
-    });
+    }
+
+    function scheduleUpdateAll() {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(updateAll);
+      });
+    }
+
+    // アドレスバーの表示切り替えなどで高さだけ変わるケースに備え、
+    // resize / pageshow（外部サイトから「戻る」で復帰した際）/ visualViewportのresizeで再計算
+    window.addEventListener('resize', scheduleUpdateAll);
+    window.addEventListener('pageshow', scheduleUpdateAll);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', scheduleUpdateAll);
+    }
 
     if (heroImg.complete) {
       updatePosition();
